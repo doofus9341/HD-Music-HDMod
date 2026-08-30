@@ -1,5 +1,7 @@
 local module = {}
 
+local bankmanager = require("fmod_bank_manager")
+
 module.pack_name = "HDMusic"
 
 module.level_musics = {}
@@ -19,6 +21,8 @@ module.level_track = 0.0
 module.shop_type = 0.0
 
 module.debug_cb_id = nil
+module.on_reset_cb_id = nil
+module.on_menu_cb_id = nil
 
 module.banks = {
 	hdmusic = {
@@ -861,15 +865,43 @@ function module.toggle_debug()
 	end
 end
 
-set_callback(function()
-	module.level_track = 0.0
-	custommusiclib.clear_level_music()
-end, ON.RESET)
-
-set_callback(function()
-	if module.adventure_played then
-		module.adventure_played = false
+module.load_func = function(notify_cb)
+	for _, bank in pairs(module.banks) do
+		if not bankmanager.bank_exists(bank.bank_path) then
+			bankmanager.load_fmod_bank(bank.bank_path, bank.load_bank_flags, bank.init_func, bank.cleanup_func)
+		end
 	end
-end, ON.MENU)
+
+	bankmanager.set_bank_sample_data_load_callback("hdmusic-load-cb", function()
+		notify_cb(module, 4)
+		bankmanager.clear_bank_sample_data_load_callback("hdmusic-load-cb")
+	end)
+
+	module.on_reset_cb_id = set_callback(function()
+		module.level_track = 0.0
+		custommusic.clear_level_music()
+	end, ON.RESET)
+
+	module.on_menu_cb_id = set_callback(function()
+		if module.adventure_played then
+			module.adventure_played = false
+		end
+	end, ON.MENU)
+end
+
+module.unload_func = function()
+	for _, bank in pairs(module.banks) do
+		bank.cleanup_func()
+	end
+	for _, bank in pairs(module.banks) do
+		bankmanager.unload_fmod_bank(bank.bank_path)
+	end
+
+	clear_callback(module.on_reset_cb_id)
+	module.on_reset_cb_id = nil
+
+	clear_callback(module.on_menu_cb_id)
+	module.on_menu_cb_id = nil
+end
 
 return module
