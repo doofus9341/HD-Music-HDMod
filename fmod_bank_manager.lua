@@ -1,6 +1,6 @@
 local module = {}
 
-module.debug_print = false
+module.debug_print = true
 
 local FMOD_BANKS = {}
 
@@ -262,7 +262,7 @@ function module.load_fmod_bank_metadata(fmod_bank_path, load_bank_flags, metadat
 
 				if metadata_loading_state == FMOD_LOADING_STATE.LOADED then
 					if module.debug_print then
-						print("[load_fmod_bank_metadata] Bank metadata loaded, loading sample data...")
+						print("[load_fmod_bank_metadata] Bank metadata loaded, running metadata load callbacks...")
 					end
 
 					-- Execute all (if any) music metadata load callbacks.

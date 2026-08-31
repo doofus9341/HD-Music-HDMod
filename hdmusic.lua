@@ -876,10 +876,14 @@ end
 
 function module.unload_func()
 	for _, bank in pairs(module.banks) do
-		bank.cleanup_func()
+		if bankmanagerlib.bank_exists(bank.bank_path) then
+			bank.cleanup_func()
+		end
 	end
 	for _, bank in pairs(module.banks) do
-		bankmanagerlib.unload_fmod_bank(bank.bank_path)
+		if bankmanagerlib.bank_exists(bank.bank_path) then
+			bankmanagerlib.unload_fmod_bank(bank.bank_path)
+		end
 	end
 
 	if module.on_reset_cb_id then
