@@ -780,8 +780,15 @@ module.banks = {
 			})
 		end,
 		cleanup_func = function()
-			libhdmod.custommusiclib.clear_level_music()
-			libhdmod.custommusiclib.clear_title_music()
+			if module.on_reset_cb_id then
+				clear_callback(module.on_reset_cb_id)
+				module.on_reset_cb_id = nil
+			end
+
+			if module.on_menu_cb_id then
+				clear_callback(module.on_menu_cb_id)
+				module.on_menu_cb_id = nil
+			end
 
 			module.title_music = nil
 
@@ -869,7 +876,7 @@ function module.load_func(metadata_load_cb)
 		if not bankmanagerlib.bank_exists(bank.bank_path) then
 			bankmanagerlib.load_fmod_bank_metadata(bank.bank_path, bank.load_bank_flags, function()
 				metadata_load_cb()
-			end)
+			end, bank.cleanup_func)
 		end
 	end
 end
@@ -884,16 +891,6 @@ function module.unload_func()
 		if bankmanagerlib.bank_exists(bank.bank_path) then
 			bankmanagerlib.unload_fmod_bank(bank.bank_path)
 		end
-	end
-
-	if module.on_reset_cb_id then
-		clear_callback(module.on_reset_cb_id)
-		module.on_reset_cb_id = nil
-	end
-
-	if module.on_menu_cb_id then
-		clear_callback(module.on_menu_cb_id)
-		module.on_menu_cb_id = nil
 	end
 end
 

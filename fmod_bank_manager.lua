@@ -1,6 +1,6 @@
 local module = {}
 
-module.debug_print = true
+module.debug_print = false
 
 local FMOD_BANKS = {}
 
@@ -202,7 +202,7 @@ function module.load_fmod_bank(fmod_bank_path, load_bank_flags, init_callback, c
 	end, ON.POST_UPDATE)
 end
 
-function module.load_fmod_bank_metadata(fmod_bank_path, load_bank_flags, metadata_load_callback)
+function module.load_fmod_bank_metadata(fmod_bank_path, load_bank_flags, metadata_load_callback, cleanup_callback)
 	if
 		not type(fmod_bank_path) == "string"
 		and not type(load_bank_flags) == "number"
@@ -293,6 +293,8 @@ function module.load_fmod_bank_metadata(fmod_bank_path, load_bank_flags, metadat
 						end
 						error(result)
 					end
+
+					CLEANUP_CALLBACKS[fmod_bank_path] = cleanup_callback
 				end
 
 				if not metadata_loading_state or metadata_loading_state == FMOD_LOADING_STATE.ERROR then
@@ -615,20 +617,24 @@ set_callback(function()
 
 	CLEANUP_CALLBACKS = {}
 
-	for _, bank in ipairs(FMOD_BANKS) do
+	for path, bank in pairs(FMOD_BANKS) do
+		if module.debug_print then
+			print("Unloading bank " .. path)
+		end
 		if bank:is_valid() then
-			if module.debug_print then
-				print("Unloading bank...")
-			end
 			if bank:unload() then
 				bank = nil
 				if module.debug_print then
-					print("Bank successfully unloaded.")
+					print("Unloaded bank " .. path .. " succesfully.")
 				end
 			else
 				if module.debug_print then
-					print("Error unloading bank!")
+					print("Failed to unload bank " .. path .. ". Invalid FMOD handle.")
 				end
+			end
+		else
+			if module.debug_print then
+				print("Failed to unload bank " .. tostring(path) .. ". Invalid FMOD handle.")
 			end
 		end
 	end

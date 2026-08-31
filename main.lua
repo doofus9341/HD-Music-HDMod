@@ -24,12 +24,10 @@ set_callback(function()
 	init_music_pack()
 end, ON.SCRIPT_ENABLE)
 
+
 set_callback(function()
 	if libhdmod then
-		print("unregistering and unloading music pack")
 		libhdmod.unregister_hdmod_music_pack(hdmusic)
-
-		hdmusic.unload_func()
 	end
 end, ON.SCRIPT_DISABLE)
 
