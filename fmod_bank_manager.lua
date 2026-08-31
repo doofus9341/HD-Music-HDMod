@@ -1,6 +1,6 @@
 local module = {}
 
-module.debug_print = true
+module.debug_print = false
 
 local FMOD_BANKS = {}
 
@@ -46,181 +46,476 @@ end
 
 function module.load_fmod_bank(fmod_bank_path, load_bank_flags, init_callback, cleanup_callback)
 	if
-		type(fmod_bank_path) == "string"
-		and type(load_bank_flags) == "number"
-		and type(init_callback) == "function"
-		and type(cleanup_callback) == "function"
+		not type(fmod_bank_path) == "string"
+		and not type(load_bank_flags) == "number"
+		and not type(init_callback) == "function"
+		and not type(cleanup_callback) == "function"
 	then
-		if not FMOD_BANKS[fmod_bank_path] then
-			if module.debug_print then
-				print("[load_fmod_bank] Loading FMOD bank " .. fmod_bank_path)
-			end
+		if module.debug_print then
+			print("[load_fmod_bank] Invalid parameters passed to function.")
+		end
 
-			local bank = load_bank(fmod_bank_path, load_bank_flags)
+		return false
+	end
 
-			if bank ~= nil and bank:is_valid() then
-				FMOD_BANKS[fmod_bank_path] = bank
+	if FMOD_BANKS[fmod_bank_path] then
+		if module.debug_print then
+			print("[load_fmod_bank] Bank already exists in bank array.")
+		end
 
-				if FMOD_BANKS[fmod_bank_path] ~= nil then
-					local bank_metadata_loaded = false
+		return false
+	end
 
-					set_callback(function()
-						if FMOD_BANKS[fmod_bank_path]:is_valid() then
-							if not bank_metadata_loaded then
-								local metadata_loading_state = FMOD_BANKS[fmod_bank_path]:get_loading_state()
+	if module.debug_print then
+		print("[load_fmod_bank] Loading FMOD bank " .. fmod_bank_path)
+	end
 
-								if metadata_loading_state == FMOD_LOADING_STATE.LOADING then
-									if module.debug_print then
-										print("[load_fmod_bank] Bank metadata loading...")
-									end
-								end
+	local bank = load_bank(fmod_bank_path, load_bank_flags)
 
-								if metadata_loading_state == FMOD_LOADING_STATE.LOADED then
-									if module.debug_print then
-										print("[load_fmod_bank] Bank metadata loaded, loading sample data...")
-									end
+	if bank == nil or not bank:is_valid() then
+		if module.debug_print then
+			print("[load_fmod_bank] Bank load failed, does the bank file exist?")
+		end
 
-									-- Execute all (if any) music metadata load callbacks.
-									for _, metadata_callback in pairs(BANK_METADATA_LOAD_CALLBACKS) do
-										local success, result = pcall(function()
-											metadata_callback()
-										end)
-										if not success then
-											if module.debug_print then
-												print("[load_fmod_bank] Caught error in bank metadata load callback: " .. result)
-											end
-											error(result)
-										end
-									end
+		return false
+	end
 
-									bank_metadata_loaded = true
-									FMOD_BANKS[fmod_bank_path]:load_sample_data()
-								end
+	FMOD_BANKS[fmod_bank_path] = bank
 
-								if not metadata_loading_state or metadata_loading_state == FMOD_LOADING_STATE.ERROR then
-									FMOD_BANKS[fmod_bank_path] = nil
-									clear_callback()
-									if module.debug_print then
-										print("[load_fmod_bank] Warning: Failed to load FMOD bank file.")
-									end
-								end
-							else
-								local sample_data_loading_state = FMOD_BANKS[fmod_bank_path]:get_sample_loading_state()
+	if FMOD_BANKS[fmod_bank_path] == nil then
+		if module.debug_print then
+			print("[load_fmod_bank] Bank load failed, does the bank file exist?")
+		end
 
-								if
-									not sample_data_loading_state
-									or sample_data_loading_state == FMOD_LOADING_STATE.ERROR
-								then
-									FMOD_BANKS[fmod_bank_path] = nil
-									clear_callback()
-									if module.debug_print then
-										print("[load_fmod_bank] Warning: Failed to load sample data for bank.")
-									end
-								end
+		return false
+	end
 
-								if sample_data_loading_state == FMOD_LOADING_STATE.LOADING then
-									if module.debug_print then
-										print("[load_fmod_bank] Bank sample data loading...")
-									end
-								end
+	local bank_metadata_loaded = false
 
-								if sample_data_loading_state == FMOD_LOADING_STATE.LOADED then
-									clear_callback()
-									if module.debug_print then
-										print(
-											"[load_fmod_bank] Bank sample data loaded succesfully. Running init callback..."
-										)
-									end
+	set_callback(function()
+		if FMOD_BANKS[fmod_bank_path]:is_valid() then
+			if not bank_metadata_loaded then
+				local metadata_loading_state = FMOD_BANKS[fmod_bank_path]:get_loading_state()
 
-									-- Execute the music init callback.
-									local success, result = pcall(function()
-										init_callback()
-									end)
-									if not success then
-										if module.debug_print then
-											print("[load_fmod_bank] Caught error in bank init callback: " .. result)
-										end
-										error(result)
-									end
-
-									-- Execute all (if any) music sample data load callbacks.
-									for _, sample_data_callback in pairs(BANK_SAMPLE_DATA_LOAD_CALLBACKS) do
-										local success, result = pcall(function()
-											sample_data_callback()
-										end)
-										if not success then
-											if module.debug_print then
-												print("[load_fmod_bank] Caught error in bank sample data load callback: " .. result)
-											end
-											error(result)
-										end
-									end
-
-									CLEANUP_CALLBACKS[fmod_bank_path] = cleanup_callback
-								end
-							end
-						else
-							FMOD_BANKS[fmod_bank_path] = nil
-							clear_callback()
-							if module.debug_print then
-								print("[load_fmod_bank] Bank failed to load. Invalid FMOD handle.")
-							end
-						end
-					end, ON.POST_UPDATE)
-				else
+				if metadata_loading_state == FMOD_LOADING_STATE.LOADING then
 					if module.debug_print then
-						print("[load_fmod_bank] Bank load failed, does the bank file exist?")
+						print("[load_fmod_bank] Bank metadata loading...")
+					end
+				end
+
+				if metadata_loading_state == FMOD_LOADING_STATE.LOADED then
+					if module.debug_print then
+						print("[load_fmod_bank] Bank metadata loaded, loading sample data...")
+					end
+
+					-- Execute all (if any) music metadata load callbacks.
+					for _, metadata_callback in pairs(BANK_METADATA_LOAD_CALLBACKS) do
+						local success, result = pcall(function()
+							-- metadata_callback is called with an argument of the banks path
+							metadata_callback(fmod_bank_path)
+						end)
+						if not success then
+							if module.debug_print then
+								print("[load_fmod_bank] Caught error in bank metadata load callback: " .. result)
+							end
+							error(result)
+						end
+					end
+
+					bank_metadata_loaded = true
+					FMOD_BANKS[fmod_bank_path]:load_sample_data()
+				end
+
+				if not metadata_loading_state or metadata_loading_state == FMOD_LOADING_STATE.ERROR then
+					FMOD_BANKS[fmod_bank_path] = nil
+					clear_callback()
+					if module.debug_print then
+						print("[load_fmod_bank] Warning: Failed to load FMOD bank file.")
 					end
 				end
 			else
-				if module.debug_print then
-					print("[load_fmod_bank] Bank load failed, does the bank file exist?")
+				local sample_data_loading_state = FMOD_BANKS[fmod_bank_path]:get_sample_loading_state()
+
+				if
+					not sample_data_loading_state
+					or sample_data_loading_state == FMOD_LOADING_STATE.ERROR
+				then
+					FMOD_BANKS[fmod_bank_path] = nil
+					clear_callback()
+					if module.debug_print then
+						print("[load_fmod_bank] Warning: Failed to load sample data for bank.")
+					end
+				end
+
+				if sample_data_loading_state == FMOD_LOADING_STATE.LOADING then
+					if module.debug_print then
+						print("[load_fmod_bank] Bank sample data loading...")
+					end
+				end
+
+				if sample_data_loading_state == FMOD_LOADING_STATE.LOADED then
+					clear_callback()
+					if module.debug_print then
+						print(
+							"[load_fmod_bank] Bank sample data loaded succesfully. Running init callback..."
+						)
+					end
+
+					-- Execute the music init callback.
+					local success, result = pcall(function()
+						init_callback()
+					end)
+					if not success then
+						if module.debug_print then
+							print("[load_fmod_bank] Caught error in bank init callback: " .. result)
+						end
+						error(result)
+					end
+
+					-- Execute all (if any) music sample data load callbacks.
+					for _, sample_data_callback in pairs(BANK_SAMPLE_DATA_LOAD_CALLBACKS) do
+						local success, result = pcall(function()
+							-- sample_data_callback is called with an argument of the banks path
+							sample_data_callback(fmod_bank_path)
+						end)
+						if not success then
+							if module.debug_print then
+								print("[load_fmod_bank] Caught error in bank sample data load callback: " ..
+									result)
+							end
+							error(result)
+						end
+					end
+
+					CLEANUP_CALLBACKS[fmod_bank_path] = cleanup_callback
 				end
 			end
 		else
+			FMOD_BANKS[fmod_bank_path] = nil
+
+			clear_callback()
+
 			if module.debug_print then
-				print("[load_fmod_bank] Bank already exists in bank array.")
+				print("[load_fmod_bank] Bank failed to load. Invalid FMOD handle.")
 			end
+		end
+	end, ON.POST_UPDATE)
+end
+
+function module.load_fmod_bank_metadata(fmod_bank_path, load_bank_flags, metadata_load_callback)
+	if
+		not type(fmod_bank_path) == "string"
+		and not type(load_bank_flags) == "number"
+		and not type(metadata_load_callback) == "function"
+	then
+		if module.debug_print then
+			print("[load_fmod_bank_metadata] Invalid parameters passed to function.")
+		end
+
+		return false
+	end
+
+	if FMOD_BANKS[fmod_bank_path] then
+		if module.debug_print then
+			print("[load_fmod_bank_metadata] Bank already exists in bank array.")
+		end
+
+		return false
+	end
+
+	if module.debug_print then
+		print("[load_fmod_bank_metadata] Loading FMOD bank " .. fmod_bank_path)
+	end
+
+	local bank = load_bank(fmod_bank_path, load_bank_flags)
+
+	if bank == nil or not bank:is_valid() then
+		if module.debug_print then
+			print("[load_fmod_bank_metadata] Bank load failed, does the bank file exist?")
+		end
+
+		return false
+	end
+
+	FMOD_BANKS[fmod_bank_path] = bank
+
+	if FMOD_BANKS[fmod_bank_path] == nil then
+		if module.debug_print then
+			print("[load_fmod_bank_metadata] Bank load failed, does the bank file exist?")
+		end
+
+		return false
+	end
+
+	local bank_metadata_loaded = false
+
+	set_callback(function()
+		if FMOD_BANKS[fmod_bank_path]:is_valid() then
+			if not bank_metadata_loaded then
+				local metadata_loading_state = FMOD_BANKS[fmod_bank_path]:get_loading_state()
+
+				if metadata_loading_state == FMOD_LOADING_STATE.LOADING then
+					if module.debug_print then
+						print("[load_fmod_bank_metadata] Bank metadata loading...")
+					end
+				end
+
+				if metadata_loading_state == FMOD_LOADING_STATE.LOADED then
+					if module.debug_print then
+						print("[load_fmod_bank_metadata] Bank metadata loaded, loading sample data...")
+					end
+
+					-- Execute all (if any) music metadata load callbacks.
+					for _, metadata_callback in pairs(BANK_METADATA_LOAD_CALLBACKS) do
+						local success, result = pcall(function()
+							-- metadata_callback is called with an argument of the banks path
+							metadata_callback(fmod_bank_path)
+						end)
+						if not success then
+							if module.debug_print then
+								print("[load_fmod_bank_metadata] Caught error in bank metadata load callback: " .. result)
+							end
+							error(result)
+						end
+					end
+
+					clear_callback()
+
+					bank_metadata_loaded = true
+
+					-- Execute the metdata load callback.
+					local success, result = pcall(function()
+						metadata_load_callback()
+					end)
+					if not success then
+						if module.debug_print then
+							print("[load_fmod_bank_metadata] Caught error in bank metadata load callback: " .. result)
+						end
+						error(result)
+					end
+				end
+
+				if not metadata_loading_state or metadata_loading_state == FMOD_LOADING_STATE.ERROR then
+					FMOD_BANKS[fmod_bank_path] = nil
+					clear_callback()
+					if module.debug_print then
+						print("[load_fmod_bank_metadata] Warning: Failed to load FMOD bank file.")
+					end
+				end
+			end
+		else
+			FMOD_BANKS[fmod_bank_path] = nil
+
+			clear_callback()
+
+			if module.debug_print then
+				print("[load_fmod_bank_metadata] Bank failed to load. Invalid FMOD handle.")
+			end
+		end
+	end, ON.POST_UPDATE)
+end
+
+function module.load_fmod_bank_sample_data(fmod_bank_path, init_callback, cleanup_callback)
+	if
+		not type(fmod_bank_path) == "string"
+		and not type(init_callback) == "function"
+		and not type(cleanup_callback) == "function"
+	then
+		if module.debug_print then
+			print("[load_fmod_bank_sample_data] Invalid parameters passed to function.")
+		end
+
+		return false
+	end
+
+	local bank_metadata_loaded = false
+
+	set_callback(function()
+		if FMOD_BANKS[fmod_bank_path]:is_valid() then
+			if not bank_metadata_loaded then
+				local metadata_loading_state = FMOD_BANKS[fmod_bank_path]:get_loading_state()
+
+				if metadata_loading_state == FMOD_LOADING_STATE.LOADING then
+					if module.debug_print then
+						print("[load_fmod_bank_sample_data] Bank metadata loading...")
+					end
+				end
+
+				if metadata_loading_state == FMOD_LOADING_STATE.LOADED then
+					if module.debug_print then
+						print("[load_fmod_bank_sample_data] Bank metadata loaded, loading sample data...")
+					end
+
+					bank_metadata_loaded = true
+					FMOD_BANKS[fmod_bank_path]:load_sample_data()
+				end
+
+				if metadata_loading_state == FMOD_LOADING_STATE.UNLOADED then
+					clear_callback()
+					if module.debug_print then
+						print("[load_fmod_bank_sample_data] Warning: Unable to load bank sample data, bank was not loaded.")
+					end
+				end
+
+				if not metadata_loading_state or metadata_loading_state == FMOD_LOADING_STATE.ERROR then
+					FMOD_BANKS[fmod_bank_path] = nil
+					clear_callback()
+					if module.debug_print then
+						print("[load_fmod_bank_sample_data] Warning: Failed to load FMOD bank file.")
+					end
+				end
+			else
+				local sample_data_loading_state = FMOD_BANKS[fmod_bank_path]:get_sample_loading_state()
+
+				if
+					not sample_data_loading_state
+					or sample_data_loading_state == FMOD_LOADING_STATE.ERROR
+				then
+					FMOD_BANKS[fmod_bank_path] = nil
+					clear_callback()
+					if module.debug_print then
+						print("[load_fmod_bank_sample_data] Warning: Failed to load sample data for bank.")
+					end
+				end
+
+				if sample_data_loading_state == FMOD_LOADING_STATE.LOADING then
+					if module.debug_print then
+						print("[load_fmod_bank_sample_data] Bank sample data loading...")
+					end
+				end
+
+				if sample_data_loading_state == FMOD_LOADING_STATE.LOADED then
+					clear_callback()
+					if module.debug_print then
+						print(
+							"[load_fmod_bank_sample_data] Bank sample data loaded succesfully. Running init callback..."
+						)
+					end
+
+					-- Execute the music init callback.
+					local success, result = pcall(function()
+						init_callback()
+					end)
+					if not success then
+						if module.debug_print then
+							print("[load_fmod_bank_sample_data] Caught error in bank init callback: " .. result)
+						end
+						error(result)
+					end
+
+					-- Execute all (if any) music sample data load callbacks.
+					for _, sample_data_callback in pairs(BANK_SAMPLE_DATA_LOAD_CALLBACKS) do
+						local success, result = pcall(function()
+							-- sample_data_callback is called with an argument of the banks path
+							sample_data_callback(fmod_bank_path)
+						end)
+						if not success then
+							if module.debug_print then
+								print("[load_fmod_bank_sample_data] Caught error in bank sample data load callback: " ..
+									result)
+							end
+							error(result)
+						end
+					end
+
+					CLEANUP_CALLBACKS[fmod_bank_path] = cleanup_callback
+				end
+			end
+		else
+			FMOD_BANKS[fmod_bank_path] = nil
+
+			clear_callback()
+
+			if module.debug_print then
+				print("[load_fmod_bank_sample_data] Bank failed to load. Invalid FMOD handle.")
+			end
+		end
+	end, ON.POST_UPDATE)
+end
+
+function module.unload_fmod_bank(fmod_bank_path)
+	if type(fmod_bank_path) ~= "string" then
+		if module.debug_print then
+			print("[unload_fmod_bank] Invalid parameters passed to function.")
+		end
+
+		return false
+	end
+
+	if not FMOD_BANKS[fmod_bank_path] then
+		if module.debug_print then
+			print("[unload_fmod_bank] Bank does not exist in bank array, was it loaded?")
+		end
+
+		return false
+	end
+
+	if not FMOD_BANKS[fmod_bank_path]:is_valid() then
+		FMOD_BANKS[fmod_bank_path] = nil
+
+		if module.debug_print then
+			print("[unload_fmod_bank] Error unloading bank, removing invalid handle: " .. fmod_bank_path)
+			print("[unload_fmod_bank] Invalid FMOD handle.")
+		end
+
+		return false
+	end
+
+	if module.debug_print then
+		print("[unload_fmod_bank] Bank unloading: " .. fmod_bank_path)
+	end
+
+	if FMOD_BANKS[fmod_bank_path]:unload() then
+		FMOD_BANKS[fmod_bank_path] = nil
+		if module.debug_print then
+			print("[unload_fmod_bank] Bank successfully unloaded.")
 		end
 	else
 		if module.debug_print then
-			print("[load_fmod_bank] Invalid parameters passed to function.")
+			print("[unload_fmod_bank] Error unload failed. Invalid FMOD handle.")
 		end
 	end
 end
 
-function module.unload_fmod_bank(fmod_bank_path)
-	if type(fmod_bank_path) == "string" then
-		if FMOD_BANKS[fmod_bank_path] then
-			if FMOD_BANKS[fmod_bank_path]:is_valid() then
-				if module.debug_print then
-					print("[unload_fmod_bank] Bank unloading: " .. fmod_bank_path)
-				end
-				if FMOD_BANKS[fmod_bank_path]:unload() then
-					FMOD_BANKS[fmod_bank_path] = nil
-					if module.debug_print then
-						print("[unload_fmod_bank] Bank successfully unloaded.")
-					end
-				else
-					if module.debug_print then
-						print("[unload_fmod_bank] Error unload failed. Invalid FMOD handle.")
-					end
-				end
-			else
-				FMOD_BANKS[fmod_bank_path] = nil
-				if module.debug_print then
-					print("[unload_fmod_bank] Error unloading bank, removing invalid handle: " .. fmod_bank_path)
-					print("[unload_fmod_bank] Invalid FMOD handle.")
-				end
-			end
-		else
-			if module.debug_print then
-				print("[unload_fmod_bank] Bank does not exist in bank array, was it loaded?")
-			end
+function module.unload_fmod_bank_sample_data(fmod_bank_path)
+	if type(fmod_bank_path) ~= "string" then
+		if module.debug_print then
+			print("[unload_fmod_bank_sample_data] Invalid parameters passed to function.")
+		end
+
+		return false
+	end
+
+	if not FMOD_BANKS[fmod_bank_path] then
+		if module.debug_print then
+			print("[unload_fmod_bank_sample_data] Bank does not exist in bank array, was it loaded?")
+		end
+
+		return false
+	end
+
+	if not FMOD_BANKS[fmod_bank_path]:is_valid() then
+		FMOD_BANKS[fmod_bank_path] = nil
+
+		if module.debug_print then
+			print("[unload_fmod_bank_sample_data] Error unloading bank, removing invalid handle: " .. fmod_bank_path)
+			print("[unload_fmod_bank_sample_data] Invalid FMOD handle.")
+		end
+
+		return false
+	end
+
+	if module.debug_print then
+		print("[unload_fmod_bank_sample_data] Bank sample data unloading: " .. fmod_bank_path)
+	end
+
+	if FMOD_BANKS[fmod_bank_path]:unload_sample_data() then
+		if module.debug_print then
+			print("[unload_fmod_bank_sample_data] Bank sample data successfully unloaded.")
 		end
 	else
 		if module.debug_print then
-			print("[unload_fmod_bank] Invalid parameters passed to function.")
+			print("[unload_fmod_bank_sample_data] Error sample data unload failed. Invalid FMOD handle.")
 		end
 	end
 end

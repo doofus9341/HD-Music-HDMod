@@ -1,7 +1,5 @@
 local module = {}
 
-local bankmanager = require("fmod_bank_manager")
-
 module.pack_name = "HDMusic"
 
 module.level_musics = {}
@@ -67,7 +65,7 @@ module.banks = {
 				},
 				should_play = function()
 					local should_play = state.screen == SCREEN.LEVEL
-						and worldlib.HD_WORLDSTATE_STATE == worldlib.HD_WORLDSTATE_STATUS.TUTORIAL
+						and libhdmod.worldlib.HD_WORLDSTATE_STATE == libhdmod.worldlib.HD_WORLDSTATE_STATUS.TUTORIAL
 
 					if should_play then
 						module.shop_type = prng:random_int(0, 3, PRNG_CLASS.FX)
@@ -120,7 +118,7 @@ module.banks = {
 
 					if should_play then
 						if test_flag(get_level_flags(), 18) then
-							custommusiclib.clear_level_music()
+							libhdmod.custommusiclib.clear_level_music()
 						end
 
 						if not module.adventure_played then
@@ -133,7 +131,7 @@ module.banks = {
 
 							if new_level_track ~= module.level_track then
 								module.level_track = new_level_track
-								custommusiclib.clear_level_music()
+								libhdmod.custommusiclib.clear_level_music()
 							end
 						end
 
@@ -182,7 +180,7 @@ module.banks = {
 				},
 				should_play = function()
 					return state.screen == SCREEN.LEVEL
-						and feelingslib.feeling_check(feelingslib.FEELING_ID.BLACKMARKET)
+						and libhdmod.feelingslib.feeling_check(libhdmod.feelingslib.FEELING_ID.BLACKMARKET)
 				end,
 			})
 
@@ -215,7 +213,7 @@ module.banks = {
 				},
 				should_play = function()
 					return state.screen == SCREEN.LEVEL
-						and feelingslib.feeling_check(feelingslib.FEELING_ID.HAUNTEDCASTLE)
+						and libhdmod.feelingslib.feeling_check(libhdmod.feelingslib.FEELING_ID.HAUNTEDCASTLE)
 				end,
 			})
 
@@ -288,7 +286,7 @@ module.banks = {
 				},
 				should_play = function()
 					local should_play = state.screen == SCREEN.LEVEL
-						and feelingslib.feeling_check(feelingslib.FEELING_ID.RESTLESS)
+						and libhdmod.feelingslib.feeling_check(libhdmod.feelingslib.FEELING_ID.RESTLESS)
 
 					if should_play then
 						local shop_type = state.level_gen.shop_type
@@ -304,7 +302,7 @@ module.banks = {
 
 						module.MUSIC_FEELING_STORAGE = {}
 
-						if feelingslib.feeling_check(feelingslib.FEELING_ID.RUSHING_WATER) then
+						if libhdmod.feelingslib.feeling_check(libhdmod.feelingslib.FEELING_ID.RUSHING_WATER) then
 							module.MUSIC_FEELING_STORAGE["rushing_water"] = 1.0
 						else
 							module.MUSIC_FEELING_STORAGE["rushing_water"] = 0.0
@@ -388,7 +386,7 @@ module.banks = {
 
 					if should_play then
 						if test_flag(get_level_flags(), 18) then
-							custommusiclib.clear_level_music()
+							libhdmod.custommusiclib.clear_level_music()
 						end
 
 						if prng:random_index(100, PRNG_CLASS.FX) == 1 then
@@ -398,7 +396,7 @@ module.banks = {
 
 							if new_level_track ~= module.level_track then
 								module.level_track = new_level_track
-								custommusiclib.clear_level_music()
+								libhdmod.custommusiclib.clear_level_music()
 							end
 						end
 
@@ -415,7 +413,7 @@ module.banks = {
 
 						module.MUSIC_FEELING_STORAGE = {}
 
-						if feelingslib.feeling_check(feelingslib.FEELING_ID.RUSHING_WATER) then
+						if libhdmod.feelingslib.feeling_check(libhdmod.feelingslib.FEELING_ID.RUSHING_WATER) then
 							module.MUSIC_FEELING_STORAGE["rushing_water"] = 1.0
 						else
 							module.MUSIC_FEELING_STORAGE["rushing_water"] = 0.0
@@ -487,7 +485,7 @@ module.banks = {
 				},
 				should_play = function()
 					return state.screen == SCREEN.LEVEL
-						and feelingslib.feeling_check(feelingslib.FEELING_ID.YETIKINGDOM)
+						and libhdmod.feelingslib.feeling_check(libhdmod.feelingslib.FEELING_ID.YETIKINGDOM)
 				end,
 			})
 
@@ -570,7 +568,7 @@ module.banks = {
 
 							if new_level_track ~= module.level_track then
 								module.level_track = new_level_track
-								custommusiclib.clear_level_music()
+								libhdmod.custommusiclib.clear_level_music()
 							end
 						end
 
@@ -663,7 +661,7 @@ module.banks = {
 
 					if should_play then
 						if test_flag(get_level_flags(), 18) then
-							custommusiclib.clear_level_music()
+							libhdmod.custommusiclib.clear_level_music()
 						end
 
 						if prng:random_index(100, PRNG_CLASS.FX) == 1 then
@@ -673,7 +671,7 @@ module.banks = {
 
 							if new_level_track ~= module.level_track then
 								module.level_track = new_level_track
-								custommusiclib.clear_level_music()
+								libhdmod.custommusiclib.clear_level_music()
 							end
 						end
 
@@ -724,7 +722,7 @@ module.banks = {
 					return (
 						state.screen == SCREEN.LEVEL
 						and state.theme == THEME.VOLCANA
-						and not feelingslib.feeling_check(feelingslib.FEELING_ID.YAMA)
+						and not libhdmod.feelingslib.feeling_check(libhdmod.feelingslib.FEELING_ID.YAMA)
 					)
 				end,
 			})
@@ -759,7 +757,8 @@ module.banks = {
 					end,
 				},
 				should_play = function()
-					return state.screen == SCREEN.LEVEL and feelingslib.feeling_check(feelingslib.FEELING_ID.YAMA)
+					return state.screen == SCREEN.LEVEL and
+						libhdmod.feelingslib.feeling_check(libhdmod.feelingslib.FEELING_ID.YAMA)
 				end,
 			})
 
@@ -781,8 +780,8 @@ module.banks = {
 			})
 		end,
 		cleanup_func = function()
-			custommusiclib.clear_level_music()
-			custommusiclib.clear_title_music()
+			libhdmod.custommusiclib.clear_level_music()
+			libhdmod.custommusiclib.clear_title_music()
 
 			module.title_music = nil
 
@@ -800,18 +799,18 @@ module.banks = {
 }
 
 function module.enable_tutorial_journal_music_layer()
-	local current_custom_level_music = custommusiclib.get_current_custom_level_music()
+	local current_custom_level_music = libhdmod.custommusiclib.get_current_custom_level_music()
 	if current_custom_level_music and current_custom_level_music.settings.event_name == "hd_tutorial_custom_music" then
 		module.MUSIC_PARAMETER_STORAGE["hd_tutorial_journal"] = 1.0
-		custommusiclib.set_custom_music_level_parameter_by_name("hd_tutorial_journal", 1.0)
+		libhdmod.custommusiclib.set_custom_music_level_parameter_by_name("hd_tutorial_journal", 1.0)
 	end
 end
 
 function module.disable_tutorial_journal_music_layer()
-	local current_custom_level_music = custommusiclib.get_current_custom_level_music()
+	local current_custom_level_music = libhdmod.custommusiclib.get_current_custom_level_music()
 	if current_custom_level_music and current_custom_level_music.settings.event_name == "hd_tutorial_custom_music" then
 		module.MUSIC_PARAMETER_STORAGE["hd_tutorial_journal"] = 0.0
-		custommusiclib.set_custom_music_level_parameter_by_name("hd_tutorial_journal", 0.0)
+		libhdmod.custommusiclib.set_custom_music_level_parameter_by_name("hd_tutorial_journal", 0.0)
 	end
 end
 
@@ -820,9 +819,9 @@ function module.prologue_first_run_override()
 end
 
 function module.eggplant_music()
-	local current_custom_level_music = custommusiclib.get_current_custom_level_music()
+	local current_custom_level_music = libhdmod.custommusiclib.get_current_custom_level_music()
 	if current_custom_level_music and current_custom_level_music.settings.event_name ~= "hd_tutorial_custom_music" then
-		custommusiclib.set_custom_music_level_parameter_by_name("eggplant", 1.0)
+		libhdmod.custommusiclib.set_custom_music_level_parameter_by_name("eggplant", 1.0)
 	end
 end
 
@@ -831,11 +830,11 @@ function module.haunted_castle_door_jumpscare()
 end
 
 function module.boss_music()
-	local current_custom_level_music = custommusiclib.get_current_custom_level_music()
+	local current_custom_level_music = libhdmod.custommusiclib.get_current_custom_level_music()
 	if current_custom_level_music and current_custom_level_music.settings.event_name == "hd_olmec_custom_music" then
-		custommusiclib.set_custom_music_level_parameter_by_name("trigger", 1.0)
+		libhdmod.custommusiclib.set_custom_music_level_parameter_by_name("trigger", 1.0)
 	elseif current_custom_level_music and current_custom_level_music.settings.event_name == "hd_yama_custom_music" then
-		custommusiclib.set_custom_music_level_parameter_by_name("trigger", 1.0)
+		libhdmod.custommusiclib.set_custom_music_level_parameter_by_name("trigger", 1.0)
 	end
 end
 
@@ -865,43 +864,80 @@ function module.toggle_debug()
 	end
 end
 
-module.load_func = function(notify_cb)
+function module.load_func(metadata_load_cb)
 	for _, bank in pairs(module.banks) do
-		if not bankmanager.bank_exists(bank.bank_path) then
-			bankmanager.load_fmod_bank(bank.bank_path, bank.load_bank_flags, bank.init_func, bank.cleanup_func)
+		if not bankmanagerlib.bank_exists(bank.bank_path) then
+			bankmanagerlib.load_fmod_bank_metadata(bank.bank_path, bank.load_bank_flags, function()
+				metadata_load_cb()
+			end)
 		end
 	end
-
-	bankmanager.set_bank_sample_data_load_callback("hdmusic-load-cb", function()
-		notify_cb(module, 4)
-		bankmanager.clear_bank_sample_data_load_callback("hdmusic-load-cb")
-	end)
-
-	module.on_reset_cb_id = set_callback(function()
-		module.level_track = 0.0
-		custommusic.clear_level_music()
-	end, ON.RESET)
-
-	module.on_menu_cb_id = set_callback(function()
-		if module.adventure_played then
-			module.adventure_played = false
-		end
-	end, ON.MENU)
 end
 
-module.unload_func = function()
+function module.unload_func()
 	for _, bank in pairs(module.banks) do
 		bank.cleanup_func()
 	end
 	for _, bank in pairs(module.banks) do
-		bankmanager.unload_fmod_bank(bank.bank_path)
+		bankmanagerlib.unload_fmod_bank(bank.bank_path)
 	end
 
-	clear_callback(module.on_reset_cb_id)
-	module.on_reset_cb_id = nil
+	if module.on_reset_cb_id then
+		clear_callback(module.on_reset_cb_id)
+		module.on_reset_cb_id = nil
+	end
 
-	clear_callback(module.on_menu_cb_id)
-	module.on_menu_cb_id = nil
+	if module.on_menu_cb_id then
+		clear_callback(module.on_menu_cb_id)
+		module.on_menu_cb_id = nil
+	end
+end
+
+function module.load_sample_data_func(notify_cb)
+	for _, bank in pairs(module.banks) do
+		if bankmanagerlib.bank_exists(bank.bank_path) then
+			bankmanagerlib.load_fmod_bank_sample_data(bank.bank_path, bank.init_func, bank.cleanup_func)
+		end
+	end
+
+	bankmanagerlib.set_bank_sample_data_load_callback("hdmusic-load-cb", function()
+		notify_cb(module, 4)
+
+		if module.on_reset_cb_id == nil then
+			module.on_reset_cb_id = set_callback(function()
+				module.level_track = 0.0
+				libhdmod.custommusiclib.clear_level_music()
+			end, ON.RESET)
+		end
+
+		if module.on_menu_cb_id == nil then
+			module.on_menu_cb_id = set_callback(function()
+				if module.adventure_played then
+					module.adventure_played = false
+				end
+			end, ON.MENU)
+		end
+
+		bankmanagerlib.clear_bank_sample_data_load_callback("hdmusic-load-cb")
+	end)
+end
+
+function module.unload_sample_data_func()
+	for _, bank in pairs(module.banks) do
+		if not bankmanagerlib.bank_exists(bank.bank_path) then
+			bankmanagerlib.unload_fmod_bank_sample_data(bank.bank_path)
+		end
+	end
+
+	if module.on_reset_cb_id then
+		clear_callback(module.on_reset_cb_id)
+		module.on_reset_cb_id = nil
+	end
+
+	if module.on_menu_cb_id then
+		clear_callback(module.on_menu_cb_id)
+		module.on_menu_cb_id = nil
+	end
 end
 
 return module
