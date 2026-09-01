@@ -821,10 +821,6 @@ function module.disable_tutorial_journal_music_layer()
 	end
 end
 
-function module.prologue_first_run_override()
-	return
-end
-
 function module.eggplant_music()
 	local current_custom_level_music = libhdmod.custommusiclib.get_current_custom_level_music()
 	if current_custom_level_music and current_custom_level_music.settings.event_name ~= "hd_tutorial_custom_music" then
