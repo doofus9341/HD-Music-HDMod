@@ -463,6 +463,18 @@ function module.unload_fmod_bank(fmod_bank_path)
 		return false
 	end
 
+	if CLEANUP_CALLBACKS[fmod_bank_path] then
+		local success, result = pcall(function()
+			CLEANUP_CALLBACKS[fmod_bank_path]()
+		end)
+		if not success then
+			if module.debug_print then
+				print("Caught error in bank cleanup callback: " .. result)
+			end
+			error(result)
+		end
+	end
+
 	if module.debug_print then
 		print("[unload_fmod_bank] Bank unloading: " .. fmod_bank_path)
 	end
