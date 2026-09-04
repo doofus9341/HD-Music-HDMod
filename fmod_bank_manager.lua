@@ -10,6 +10,8 @@ local BANK_SAMPLE_DATA_LOAD_CALLBACKS = {}
 
 local CLEANUP_CALLBACKS = {}
 
+---@param callback_name string @ Name of the callback used as an identifier for clearing it later.
+---@param metadata_load_callback function @ Function called when any bank finishes loading metadata. The callback signature is nil metadata_callback(string fmod_bank_path)
 function module.set_bank_metadata_load_callback(callback_name, metadata_load_callback)
 	if
 		type(callback_name) == "string"
@@ -19,6 +21,7 @@ function module.set_bank_metadata_load_callback(callback_name, metadata_load_cal
 	end
 end
 
+---@param callback_name string @ Name of the callback to be cleared. This is the name you set in set_bank_metadata_load_callback().
 function module.clear_bank_metadata_load_callback(callback_name)
 	if
 		type(callback_name) == "string"
@@ -27,6 +30,8 @@ function module.clear_bank_metadata_load_callback(callback_name)
 	end
 end
 
+---@param callback_name string @ Name of the callback used as an identifier for clearing it later.
+---@param sample_data_load_callback function @ Function called when any bank finishes loading sample data. The callback signature is nil sample_data_callback(string fmod_bank_path)
 function module.set_bank_sample_data_load_callback(callback_name, sample_data_load_callback)
 	if
 		type(callback_name) == "string"
@@ -36,6 +41,7 @@ function module.set_bank_sample_data_load_callback(callback_name, sample_data_lo
 	end
 end
 
+---@param callback_name string @ Name of the callback to be cleared. This is the name you set in set_bank_sample_data_load_callback().
 function module.clear_bank_sample_data_load_callback(callback_name)
 	if
 		type(callback_name) == "string"
@@ -44,6 +50,10 @@ function module.clear_bank_sample_data_load_callback(callback_name)
 	end
 end
 
+---@param fmod_bank_path string @ Path of the bank to load sample data for
+---@param load_bank_flags FMOD_LOAD_BANK_FLAGS @ Bank load flags used for load_bank(). FMOD_LOAD_BANK_FLAGS.NORMAL will cause the game to hang until loading finishes; FMOD_LOAD_BANK_FLAGS.NONBLOCKING will load more slowly in the background
+---@param init_callback function @ Function called when when sample data finishes loading
+---@param cleanup_callback function @ Function called when when the bank is unloaded
 function module.load_fmod_bank(fmod_bank_path, load_bank_flags, init_callback, cleanup_callback)
 	if
 		not type(fmod_bank_path) == "string"
@@ -202,11 +212,16 @@ function module.load_fmod_bank(fmod_bank_path, load_bank_flags, init_callback, c
 	end, ON.POST_UPDATE)
 end
 
+---@param fmod_bank_path string @ Path of the bank to load sample data for
+---@param load_bank_flags FMOD_LOAD_BANK_FLAGS @ Bank load flags used for load_bank(). Use FMOD_LOAD_BANK_FLAGS.NORMAL, or FMOD_LOAD_BANK_FLAGS.NONBLOCKING
+---@param metadata_load_callback function @ Function called when when sample data finishes loading
+---@param cleanup_callback function @ Function called when when the bank is unloaded
 function module.load_fmod_bank_metadata(fmod_bank_path, load_bank_flags, metadata_load_callback, cleanup_callback)
 	if
 		not type(fmod_bank_path) == "string"
 		and not type(load_bank_flags) == "number"
 		and not type(metadata_load_callback) == "function"
+		and not type(cleanup_callback) == "function"
 	then
 		if module.debug_print then
 			print("[load_fmod_bank_metadata] Invalid parameters passed to function.")
@@ -317,6 +332,9 @@ function module.load_fmod_bank_metadata(fmod_bank_path, load_bank_flags, metadat
 	end, ON.POST_UPDATE)
 end
 
+---@param fmod_bank_path string @ Path of the bank to load sample data for
+---@param init_callback function @ Function called when when sample data finishes loading
+---@param cleanup_callback function @ Function called when when the bank is unloaded
 function module.load_fmod_bank_sample_data(fmod_bank_path, init_callback, cleanup_callback)
 	if
 		not type(fmod_bank_path) == "string"
@@ -355,7 +373,8 @@ function module.load_fmod_bank_sample_data(fmod_bank_path, init_callback, cleanu
 				if metadata_loading_state == FMOD_LOADING_STATE.UNLOADED then
 					clear_callback()
 					if module.debug_print then
-						print("[load_fmod_bank_sample_data] Warning: Unable to load bank sample data, bank was not loaded.")
+						print(
+						"[load_fmod_bank_sample_data] Warning: Unable to load bank sample data, bank was not loaded.")
 					end
 				end
 
@@ -435,6 +454,7 @@ function module.load_fmod_bank_sample_data(fmod_bank_path, init_callback, cleanu
 	end, ON.POST_UPDATE)
 end
 
+---@param fmod_bank_path string @ Path of the bank to unload
 function module.unload_fmod_bank(fmod_bank_path)
 	if type(fmod_bank_path) ~= "string" then
 		if module.debug_print then
@@ -491,6 +511,7 @@ function module.unload_fmod_bank(fmod_bank_path)
 	end
 end
 
+---@param fmod_bank_path string @ Path of the bank to unload sample data for
 function module.unload_fmod_bank_sample_data(fmod_bank_path)
 	if type(fmod_bank_path) ~= "string" then
 		if module.debug_print then
@@ -534,6 +555,7 @@ function module.unload_fmod_bank_sample_data(fmod_bank_path)
 	end
 end
 
+---@param fmod_bank_path string @ Path of the bank to check metadata loading state of
 function module.bank_metadata_loaded(fmod_bank_path)
 	if type(fmod_bank_path) == "string" then
 		if FMOD_BANKS[fmod_bank_path] then
@@ -565,6 +587,7 @@ function module.bank_metadata_loaded(fmod_bank_path)
 	end
 end
 
+---@param fmod_bank_path string @ Path of the bank to check sample data loading state of
 function module.bank_sample_data_loaded(fmod_bank_path)
 	if type(fmod_bank_path) == "string" then
 		if FMOD_BANKS[fmod_bank_path] then
@@ -596,6 +619,7 @@ function module.bank_sample_data_loaded(fmod_bank_path)
 	end
 end
 
+---@param fmod_bank_path string @ Path of the bank to check
 function module.bank_exists(fmod_bank_path)
 	if type(fmod_bank_path) == "string" then
 		if FMOD_BANKS[fmod_bank_path] then
