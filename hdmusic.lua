@@ -893,7 +893,7 @@ function module.load_sample_data_func(notify_cb)
 	end
 
 	bankmanagerlib.set_bank_sample_data_load_callback("hdmusic-load-cb", function()
-		notify_cb(module, 4)
+		notify_cb(module, FMOD_LOADING_STATE.LOADED)
 
 		if module.on_reset_cb_id == nil then
 			module.on_reset_cb_id = set_callback(function()
