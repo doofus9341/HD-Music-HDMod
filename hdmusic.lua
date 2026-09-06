@@ -890,11 +890,11 @@ function module.load_sample_data_func(notify_cb)
 				function(statetype, loadstate)
 					if statetype == bankmanagerlib.LOADING_STATE_TYPE.METADATA then
 						if loadstate == FMOD_LOADING_STATE.ERROR then
-							notify_cb(module, loadstate)
+							notify_cb(module, statetype, loadstate)
 						end
 					end
 					if statetype == bankmanagerlib.LOADING_STATE_TYPE.SAMPLEDATA then
-						notify_cb(module, loadstate)
+						notify_cb(module, statetype, loadstate)
 						if loadstate == FMOD_LOADING_STATE.LOADED then
 							if module.on_reset_cb_id == nil then
 								module.on_reset_cb_id = set_callback(function()
@@ -912,7 +912,8 @@ function module.load_sample_data_func(notify_cb)
 							end
 						end
 					end
-				end)
+				end
+			)
 		end
 	end
 end

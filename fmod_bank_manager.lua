@@ -1,6 +1,6 @@
 local module = {}
 
-module.debug_print = true
+module.debug_print = false
 
 -- The type of loading state, used in loading_state_callback()
 module.LOADING_STATE_TYPE = {
