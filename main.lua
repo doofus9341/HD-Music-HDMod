@@ -1,21 +1,19 @@
+local hdmod_version <const> = "2.0.1"
+
+---@diagnostic disable: lowercase-global
+bankmanagerlib = require("fmod_bank_manager")
+hdmod = import("tilecode/hdmod", hdmod_version)
+hdmusic = require("hdmusic")
+
 meta.name = "HDMod-HD-Music"
 meta.version = "1.0.0"
 meta.description = "Spelunky HD's music for HDMod"
 meta.author = "Taffer"
 
-local hdmod_script_id = "tilecode/hdmod"
-local hdmod_version = "2.0.1"
-
-bankmanagerlib = require("fmod_bank_manager")
-libhdmod = import(hdmod_script_id, hdmod_version)
-hdmusic = require("hdmusic")
-
 local function init_music_pack()
-	if libhdmod then
-		print("loading music pack")
+	if hdmod then
 		hdmusic.load_func(function()
-			print("registering music pack")
-			libhdmod.register_hdmod_music_pack(hdmusic)
+			hdmod.register_hdmod_music_pack(hdmusic)
 		end)
 	end
 end
@@ -26,8 +24,8 @@ end, ON.SCRIPT_ENABLE)
 
 
 set_callback(function()
-	if libhdmod then
-		libhdmod.unregister_hdmod_music_pack(hdmusic)
+	if hdmod then
+		hdmod.unregister_hdmod_music_pack(hdmusic)
 	end
 end, ON.SCRIPT_DISABLE)
 
