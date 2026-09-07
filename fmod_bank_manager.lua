@@ -419,8 +419,6 @@ function module.load_bank_sample_data(fmod_bank_path, sampledata_load_callback, 
 					if loading_state_callback ~= nil then
 						loading_state_callback(module.LOADING_STATE_TYPE.METADATA, FMOD_LOADING_STATE.LOADED)
 					end
-
-					UNLOAD_CALLBACKS[fmod_bank_path] = unload_callback
 				end
 			else
 				local sample_data_loading_state = FMOD_BANKS[fmod_bank_path]:get_sample_loading_state()
