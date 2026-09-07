@@ -22,7 +22,6 @@ set_callback(function()
 	init_music_pack()
 end, ON.SCRIPT_ENABLE)
 
-
 set_callback(function()
 	if hdmod then
 		hdmod.unregister_hdmod_music_pack(hdmusic)

@@ -21,14 +21,21 @@ local UNLOAD_CALLBACKS = {}
 ---@param sampledata_load_callback function @ Function called when when sample data finishes loading
 ---@param unload_callback function @ Function called when when the bank is unloaded, useful for clearing any callbacks and clearing music
 ---@param loading_state_callback function? @ Optional. Function that is called during each part of bank loading. The callback signature is nil loading_state_callback(fmod_bank_manager.LOADING_STATE_TYPE statetype, FMOD_LOADING_STATE loadstate)
-function module.load_bank(fmod_bank_path, load_bank_flags, sampledata_load_callback, unload_callback,
-						  loading_state_callback)
-	if not (
+function module.load_bank(
+	fmod_bank_path,
+	load_bank_flags,
+	sampledata_load_callback,
+	unload_callback,
+	loading_state_callback
+)
+	if
+		not (
 			type(fmod_bank_path) == "string"
 			and type(load_bank_flags) == "number"
 			and type(sampledata_load_callback) == "function"
 			and type(unload_callback) == "function"
-			and (not loading_state_callback or type(loading_state_callback) == "function"))
+			and (not loading_state_callback or type(loading_state_callback) == "function")
+		)
 	then
 		if module.debug_print then
 			print("[load_bank] Invalid parameters passed to function.")
@@ -130,10 +137,7 @@ function module.load_bank(fmod_bank_path, load_bank_flags, sampledata_load_callb
 			else
 				local sample_data_loading_state = FMOD_BANKS[fmod_bank_path]:get_sample_loading_state()
 
-				if
-					not sample_data_loading_state
-					or sample_data_loading_state == FMOD_LOADING_STATE.ERROR
-				then
+				if not sample_data_loading_state or sample_data_loading_state == FMOD_LOADING_STATE.ERROR then
 					FMOD_BANKS[fmod_bank_path] = nil
 					clear_callback()
 
@@ -159,9 +163,7 @@ function module.load_bank(fmod_bank_path, load_bank_flags, sampledata_load_callb
 				if sample_data_loading_state == FMOD_LOADING_STATE.LOADED then
 					clear_callback()
 					if module.debug_print then
-						print(
-							"[load_bank] Bank sample data loaded succesfully. Executing sample data load callback..."
-						)
+						print("[load_bank] Bank sample data loaded succesfully. Executing sample data load callback...")
 					end
 
 					-- Execute the sample data load callback.
@@ -202,14 +204,21 @@ end
 ---@param metadata_load_callback function @ Function called when when sample data finishes loading
 ---@param unload_callback function @ Function called when when the bank is unloaded, useful for clearing any callbacks and clearing music
 ---@param loading_state_callback function? @ Optional. Function that is called during each part of bank loading. The callback signature is nil loading_state_callback(fmod_bank_manager.LOADING_STATE_TYPE statetype, FMOD_LOADING_STATE loadstate)
-function module.load_bank_metadata(fmod_bank_path, load_bank_flags, metadata_load_callback, unload_callback,
-								   loading_state_callback)
-	if not (
+function module.load_bank_metadata(
+	fmod_bank_path,
+	load_bank_flags,
+	metadata_load_callback,
+	unload_callback,
+	loading_state_callback
+)
+	if
+		not (
 			type(fmod_bank_path) == "string"
 			and type(load_bank_flags) == "number"
 			and type(metadata_load_callback) == "function"
 			and type(unload_callback) == "function"
-			and (not loading_state_callback or type(loading_state_callback) == "function"))
+			and (not loading_state_callback or type(loading_state_callback) == "function")
+		)
 	then
 		if module.debug_print then
 			print("[load_bank_metadata] Invalid parameters passed to function.")
@@ -338,13 +347,13 @@ end
 ---@param sampledata_load_callback function @ Function called when when sample data finishes loading
 ---@param unload_callback function @ Function called when when the bank is unloaded, useful for clearing any callbacks and clearing music
 ---@param loading_state_callback function? @ Optional. Function that is called during each part of bank loading. The callback signature is nil loading_state_callback(fmod_bank_manager.LOADING_STATE_TYPE statetype, FMOD_LOADING_STATE loadstate)
-function module.load_bank_sample_data(fmod_bank_path, sampledata_load_callback, unload_callback,
-									  loading_state_callback)
-	if not (
+function module.load_bank_sample_data(fmod_bank_path, sampledata_load_callback, loading_state_callback)
+	if
+		not (
 			type(fmod_bank_path) == "string"
 			and type(sampledata_load_callback) == "function"
-			and type(unload_callback) == "function"
-			and (not loading_state_callback or type(loading_state_callback) == "function"))
+			and (not loading_state_callback or type(loading_state_callback) == "function")
+		)
 	then
 		if module.debug_print then
 			print("[load_bank_sample_data] Invalid parameters passed to function.")
@@ -381,8 +390,7 @@ function module.load_bank_sample_data(fmod_bank_path, sampledata_load_callback, 
 					clear_callback()
 
 					if module.debug_print then
-						print(
-							"[load_bank_sample_data] Warning: Unable to load bank sample data, bank was not loaded.")
+						print("[load_bank_sample_data] Warning: Unable to load bank sample data, bank was not loaded.")
 					end
 
 					if loading_state_callback ~= nil then
@@ -417,10 +425,7 @@ function module.load_bank_sample_data(fmod_bank_path, sampledata_load_callback, 
 			else
 				local sample_data_loading_state = FMOD_BANKS[fmod_bank_path]:get_sample_loading_state()
 
-				if
-					not sample_data_loading_state
-					or sample_data_loading_state == FMOD_LOADING_STATE.ERROR
-				then
+				if not sample_data_loading_state or sample_data_loading_state == FMOD_LOADING_STATE.ERROR then
 					FMOD_BANKS[fmod_bank_path] = nil
 					clear_callback()
 
@@ -514,7 +519,7 @@ function module.unload_bank(fmod_bank_path)
 		end)
 		if not success then
 			if module.debug_print then
-				print("Caught error in bank cleanup callback: " .. result)
+				print("Caught error in bank unload callback: " .. result)
 			end
 			error(result)
 		end
@@ -562,8 +567,10 @@ function module.unload_bank_sample_data(fmod_bank_path)
 		FMOD_BANKS[fmod_bank_path] = nil
 
 		if module.debug_print then
-			print("[unload_bank_sample_data] Error unloading bank, invalid handle. Removing invalid handle: " ..
-				fmod_bank_path)
+			print(
+				"[unload_bank_sample_data] Error unloading bank, invalid handle. Removing invalid handle: "
+					.. fmod_bank_path
+			)
 		end
 
 		return false
@@ -648,22 +655,22 @@ end
 
 set_callback(function()
 	if module.debug_print then
-		print("Disabling FMOD bank manager and running all cleanup callbacks...")
+		print("Disabling FMOD bank manager and running all unload callbacks...")
 	end
-	-- Execute all music cleanup callbacks.
-	for _, unload_callback in pairs(CLEANUP_CALLBACKS) do
+	-- Execute all music unload callbacks.
+	for _, unload_callback in pairs(UNLOAD_CALLBACKS) do
 		local success, result = pcall(function()
 			unload_callback()
 		end)
 		if not success then
 			if module.debug_print then
-				print("Caught error in bank cleanup callback: " .. result)
+				print("Caught error in bank unload callback: " .. result)
 			end
 			error(result)
 		end
 	end
 
-	CLEANUP_CALLBACKS = {}
+	UNLOAD_CALLBACKS = {}
 
 	for path, bank in pairs(FMOD_BANKS) do
 		if module.debug_print then
