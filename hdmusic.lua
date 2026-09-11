@@ -287,6 +287,7 @@ module.banks = {
 				should_play = function()
 					local should_play = state.screen == SCREEN.LEVEL
 						and hdmod.feelingslib.feeling_check(hdmod.feelingslib.FEELING_ID.RESTLESS)
+						and not test_flag(get_level_flags(), 18)
 
 					if should_play then
 						local shop_type = state.level_gen.shop_type
