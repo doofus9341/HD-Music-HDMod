@@ -887,32 +887,31 @@ end
 function module.load_sample_data_func(notify_cb)
 	for _, bank in pairs(module.banks) do
 		if bankmanagerlib.bank_exists(bank.bank_path) then
-			bankmanagerlib.load_bank_sample_data(bank.bank_path, bank.sampledata_load_func, function(statetype, loadstate)
-				if statetype == bankmanagerlib.LOADING_STATE_TYPE.METADATA then
-					if loadstate == FMOD_LOADING_STATE.ERROR then
-						notify_cb(module, statetype, loadstate)
-					end
-				end
-				if statetype == bankmanagerlib.LOADING_STATE_TYPE.SAMPLEDATA then
+			bankmanagerlib.load_bank_sample_data(
+				bank.bank_path,
+				bank.sampledata_load_func,
+				function(statetype, loadstate)
 					notify_cb(module, statetype, loadstate)
-					if loadstate == FMOD_LOADING_STATE.LOADED then
-						if module.on_reset_cb_id == nil then
-							module.on_reset_cb_id = set_callback(function()
-								module.level_track = 0.0
-								hdmod.custommusiclib.clear_level_music()
-							end, ON.RESET)
-						end
+					if statetype == bankmanagerlib.LOADING_STATE_TYPE.SAMPLEDATA then
+						if loadstate == FMOD_LOADING_STATE.LOADED then
+							if module.on_reset_cb_id == nil then
+								module.on_reset_cb_id = set_callback(function()
+									module.level_track = 0.0
+									hdmod.custommusiclib.clear_level_music()
+								end, ON.RESET)
+							end
 
-						if module.on_menu_cb_id == nil then
-							module.on_menu_cb_id = set_callback(function()
-								if module.adventure_played then
-									module.adventure_played = false
-								end
-							end, ON.MENU)
+							if module.on_menu_cb_id == nil then
+								module.on_menu_cb_id = set_callback(function()
+									if module.adventure_played then
+										module.adventure_played = false
+									end
+								end, ON.MENU)
+							end
 						end
 					end
 				end
-			end)
+			)
 		end
 	end
 end
