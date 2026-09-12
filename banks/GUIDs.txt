@@ -54,6 +54,7 @@
 {1b789ac8-f811-4762-a04a-1110ef3a1c85} bus:/Master_SUM/Master_SFX/SFX_diegetic/SFX_5_rubble
 {be60f57a-8dc3-423b-a430-0fbe2bdd1091} bus:/Master_SUM/Master_SFX/SFX_diegetic/Tile break
 {8ad747ca-dfd8-4194-a2af-e4dd248f19fd} bus:/Master_SUM/Master_SFX/SFX_journal
+{d5342f2c-0e0b-47cd-8e58-4ebedb0cee59} event:/HDMod_HD_BGM_Basecamp
 {629b9133-ec61-461d-be90-ca91b9efcd84} event:/HDMod_HD_BGM_Credits
 {074918db-c60d-4921-8f15-287d9772460a} event:/HDMod_HD_BGM_Master
 {4dc3da1b-2232-4001-8be6-51d6db577477} event:/HDMod_HD_BGM_Title
