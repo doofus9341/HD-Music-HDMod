@@ -874,22 +874,6 @@ function module.toggle_debug()
 	end
 end
 
-function module.load_func(metadata_load_cb)
-	for _, bank in pairs(module.banks) do
-		if not bankmanagerlib.bank_exists(bank.bank_path) then
-			bankmanagerlib.load_bank_metadata(bank.bank_path, bank.load_bank_flags, metadata_load_cb, bank.unload_func)
-		end
-	end
-end
-
-function module.unload_func()
-	for _, bank in pairs(module.banks) do
-		if bankmanagerlib.bank_exists(bank.bank_path) then
-			bankmanagerlib.unload_bank(bank.bank_path)
-		end
-	end
-end
-
 function module.load_sample_data_func(notify_cb)
 	for _, bank in pairs(module.banks) do
 		if bankmanagerlib.bank_exists(bank.bank_path) then

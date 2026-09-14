@@ -12,9 +12,13 @@ meta.author = "Taffer"
 
 local function init_music_pack()
 	if hdmod then
-		hdmusic.load_func(function()
-			hdmod.register_hdmod_music_pack(hdmusic)
-		end)
+		for _, bank in pairs(hdmusic.banks) do
+			if not bankmanagerlib.bank_exists(bank.bank_path) then
+				bankmanagerlib.load_bank_metadata(bank.bank_path, bank.load_bank_flags, function()
+					hdmod.register_hdmod_music_pack(hdmusic)
+				end, bank.unload_func)
+			end
+		end
 	end
 end
 
