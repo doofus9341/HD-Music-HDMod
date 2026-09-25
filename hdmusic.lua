@@ -850,6 +850,11 @@ function module.post_boss_music()
 	return
 end
 
+function module.on_reset()
+	module.level_track = 0.0
+	hdmod.custommusiclib.clear_level_music()
+end
+
 function module.toggle_debug()
 	if module.debug_cb_id == nil then
 		module.debug_cb_id = set_callback(function(ctx)
