@@ -19,8 +19,6 @@ module.level_track = 0.0
 module.shop_type = 0.0
 
 module.debug_cb_id = nil
-module.on_reset_cb_id = nil
-module.on_menu_cb_id = nil
 
 module.banks = {
 	hdmusic = {
@@ -871,56 +869,6 @@ function module.toggle_debug()
 	else
 		clear_callback(module.debug_cb_id)
 		module.debug_cb_id = nil
-	end
-end
-
-function module.load_sample_data_func(notify_cb)
-	for _, bank in pairs(module.banks) do
-		if bankmanagerlib.bank_exists(bank.bank_path) then
-			bankmanagerlib.load_bank_sample_data(
-				bank.bank_path,
-				bank.sampledata_load_func,
-				function(statetype, loadstate)
-					notify_cb(module, statetype, loadstate)
-					if statetype == bankmanagerlib.LOADING_STATE_TYPE.SAMPLEDATA then
-						if loadstate == FMOD_LOADING_STATE.LOADED then
-							if module.on_reset_cb_id == nil then
-								module.on_reset_cb_id = set_callback(function()
-									module.level_track = 0.0
-									hdmod.custommusiclib.clear_level_music()
-								end, ON.RESET)
-							end
-
-							if module.on_menu_cb_id == nil then
-								module.on_menu_cb_id = set_callback(function()
-									if module.adventure_played then
-										module.adventure_played = false
-									end
-								end, ON.MENU)
-							end
-						end
-					end
-				end
-			)
-		end
-	end
-end
-
-function module.unload_sample_data_func()
-	for _, bank in pairs(module.banks) do
-		if not bankmanagerlib.bank_exists(bank.bank_path) then
-			bankmanagerlib.unload_bank_sample_data(bank.bank_path)
-		end
-	end
-
-	if module.on_reset_cb_id then
-		clear_callback(module.on_reset_cb_id)
-		module.on_reset_cb_id = nil
-	end
-
-	if module.on_menu_cb_id then
-		clear_callback(module.on_menu_cb_id)
-		module.on_menu_cb_id = nil
 	end
 end
 
