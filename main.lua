@@ -24,7 +24,7 @@ local music_pack_meta = {
 					bank.bank_path,
 					bank.sampledata_load_func,
 					function(statetype, loadstate)
-						notify_cb(mod_id, statetype, loadstate)
+						notify_cb(mod_script_id, statetype, loadstate)
 						if statetype == bankmanagerlib.LOADING_STATE_TYPE.SAMPLEDATA then
 							if loadstate == FMOD_LOADING_STATE.LOADED then
 								if on_menu_cb_id == nil then
@@ -60,7 +60,7 @@ local function init_music_pack()
 		for _, bank in pairs(hdmusic.banks) do
 			if not bankmanagerlib.bank_exists(bank.bank_path) then
 				bankmanagerlib.load_bank_metadata(bank.bank_path, bank.load_bank_flags, function()
-					hdmod.register_hdmod_music_pack(get_id(), music_pack_meta, hdmusic)
+					hdmod.register_hdmod_music_pack(mod_script_id, music_pack_meta, hdmusic)
 				end, bank.unload_func)
 			end
 		end
@@ -73,7 +73,7 @@ end, ON.SCRIPT_ENABLE)
 
 set_callback(function()
 	if hdmod then
-		hdmod.unregister_hdmod_music_pack(get_id())
+		hdmod.unregister_hdmod_music_pack(mod_script_id)
 	end
 end, ON.SCRIPT_DISABLE)
 
