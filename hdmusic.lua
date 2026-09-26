@@ -1,7 +1,5 @@
 local module = {}
 
-module.pack_name = "HDMusic"
-
 module.level_musics = {}
 
 module.title_music = nil

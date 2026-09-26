@@ -1,4 +1,5 @@
 local hdmod_version <const> = "2.0.1"
+local mod_script_id <const> = get_id()
 
 ---@diagnostic disable: lowercase-global
 bankmanagerlib = require("fmod_bank_manager")
@@ -12,50 +13,53 @@ meta.author = "Taffer"
 
 local on_menu_cb_id = nil
 
-function load_sample_data_func(notify_cb)
-	for _, bank in pairs(hdmusic.banks) do
-		if bankmanagerlib.bank_exists(bank.bank_path) then
-			bankmanagerlib.load_bank_sample_data(
-				bank.bank_path,
-				bank.sampledata_load_func,
-				function(statetype, loadstate)
-					notify_cb(hdmusic, statetype, loadstate)
-					if statetype == bankmanagerlib.LOADING_STATE_TYPE.SAMPLEDATA then
-						if loadstate == FMOD_LOADING_STATE.LOADED then
-							if on_menu_cb_id == nil then
-								on_menu_cb_id = set_callback(function()
-									if hdmusic.adventure_played then
-										hdmusic.adventure_played = false
-									end
-								end, ON.MENU)
+local music_pack_meta = {
+	pack_name = "HDMusic",
+	music_pack_format_version = 1.0,
+	load_sample_data_func = function(notify_cb)
+		for _, bank in pairs(hdmusic.banks) do
+			if bankmanagerlib.bank_exists(bank.bank_path) then
+				bankmanagerlib.load_bank_sample_data(
+					bank.bank_path,
+					bank.sampledata_load_func,
+					function(statetype, loadstate)
+						notify_cb(mod_id, statetype, loadstate)
+						if statetype == bankmanagerlib.LOADING_STATE_TYPE.SAMPLEDATA then
+							if loadstate == FMOD_LOADING_STATE.LOADED then
+								if on_menu_cb_id == nil then
+									on_menu_cb_id = set_callback(function()
+										if hdmusic.adventure_played then
+											hdmusic.adventure_played = false
+										end
+									end, ON.MENU)
+								end
 							end
 						end
 					end
-				end
-			)
+				)
+			end
 		end
-	end
-end
-
-function unload_sample_data_func()
-	for _, bank in pairs(hdmusic.banks) do
-		if not bankmanagerlib.bank_exists(bank.bank_path) then
-			bankmanagerlib.unload_bank_sample_data(bank.bank_path)
+	end,
+	unload_sample_data_func = function()
+		for _, bank in pairs(hdmusic.banks) do
+			if not bankmanagerlib.bank_exists(bank.bank_path) then
+				bankmanagerlib.unload_bank_sample_data(bank.bank_path)
+			end
 		end
-	end
 
-	if on_menu_cb_id then
-		clear_callback(on_menu_cb_id)
-		on_menu_cb_id = nil
-	end
-end
+		if on_menu_cb_id then
+			clear_callback(on_menu_cb_id)
+			on_menu_cb_id = nil
+		end
+	end,
+}
 
 local function init_music_pack()
 	if hdmod then
 		for _, bank in pairs(hdmusic.banks) do
 			if not bankmanagerlib.bank_exists(bank.bank_path) then
 				bankmanagerlib.load_bank_metadata(bank.bank_path, bank.load_bank_flags, function()
-					hdmod.register_hdmod_music_pack(hdmusic, load_sample_data_func, unload_sample_data_func)
+					hdmod.register_hdmod_music_pack(get_id(), music_pack_meta, hdmusic)
 				end, bank.unload_func)
 			end
 		end
@@ -68,7 +72,7 @@ end, ON.SCRIPT_ENABLE)
 
 set_callback(function()
 	if hdmod then
-		hdmod.unregister_hdmod_music_pack(hdmusic)
+		hdmod.unregister_hdmod_music_pack(get_id())
 	end
 end, ON.SCRIPT_DISABLE)
 
