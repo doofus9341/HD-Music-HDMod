@@ -1,15 +1,16 @@
 local hdmod_version <const> = "2.0.1"
-local mod_script_id <const> = get_id()
 
 ---@diagnostic disable: lowercase-global
 bankmanagerlib = require("fmod_bank_manager")
 hdmod = import("tilecode/hdmod", hdmod_version)
 hdmusic = require("hdmusic")
 
-meta.name = "HDMod-HD-Music"
+meta.name = "HD-Music-HDMod"
 meta.version = "1.0.0"
 meta.description = "Spelunky HD's music for HDMod"
 meta.author = "Taffer"
+
+local mod_script_id <const> = get_id()
 
 local on_menu_cb_id = nil
 
