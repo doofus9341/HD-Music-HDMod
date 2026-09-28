@@ -783,16 +783,6 @@ module.banks = {
 			})
 		end,
 		unload_func = function()
-			if module.on_reset_cb_id then
-				clear_callback(module.on_reset_cb_id)
-				module.on_reset_cb_id = nil
-			end
-
-			if module.on_menu_cb_id then
-				clear_callback(module.on_menu_cb_id)
-				module.on_menu_cb_id = nil
-			end
-
 			module.title_music = nil
 
 			module.credits_music = nil
