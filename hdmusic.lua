@@ -4,6 +4,7 @@ module.level_musics = {}
 
 module.title_music = nil
 module.credits_music = nil
+module.basecamp_music = nil
 
 module.MUSIC_FEELING_STORAGE = {}
 module.MUSIC_PARAMETER_STORAGE = {}
@@ -786,6 +787,8 @@ module.banks = {
 			module.title_music = nil
 
 			module.credits_music = nil
+
+			module.basecamp_music = nil
 
 			module.level_musics = {}
 
