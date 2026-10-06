@@ -46,6 +46,12 @@ module.banks = {
 				base_volume = 1.0,
 				event_name = "hd_basecamp_custom_music",
 				event_description = get_event_by_id("{d5342f2c-0e0b-47cd-8e58-4ebedb0cee59}"),
+				init_function = function(ctx)
+					local shortcuts_state = savegame.shortcuts
+					if shortcuts_state >= 0 and shortcuts_state < 30 then
+						ctx.event_instance:set_parameter_by_name("value", shortcuts_state)
+					end
+				end,
 			}
 
 			table.insert(module.level_musics, {

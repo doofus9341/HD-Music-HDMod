@@ -70,4 +70,5 @@
 {91c83566-202e-4029-95e6-7b4070c80cab} parameter:/player_depth
 {9a04db0f-9e0b-4966-b8e2-1f3ee1e01553} parameter:/rushing_water
 {a16be887-0cfb-423b-9640-5b039464d7f9} parameter:/trigger
+{9430e5f2-e1d1-4f86-b957-0bef954faa53} parameter:/value
 {31519498-28ad-45ef-b341-711e413af074} parameter:/win_state
