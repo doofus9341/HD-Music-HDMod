@@ -100,13 +100,15 @@ module.banks = {
 
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
 
-						ctx.event_instance:set_parameter_by_name("current_theme", 1.0)
-
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
 
 						ctx.event_instance:set_parameter_by_name("level_track", module.level_track)
 						ctx.event_instance:set_parameter_by_name("current_shop_type", module.shop_type)
+
+						set_timeout(function()
+							ctx.event_instance:set_parameter_by_name("current_theme", 1.0)
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -173,10 +175,14 @@ module.banks = {
 
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
 
-						ctx.event_instance:set_parameter_by_name("hdmod_level_feeling", 9.0)
+						
 
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
+
+						set_timeout(function()
+							ctx.event_instance:set_parameter_by_name("hdmod_level_feeling", 9.0)
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -206,10 +212,12 @@ module.banks = {
 
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
 
-						ctx.event_instance:set_parameter_by_name("hdmod_level_feeling", 10.0)
-
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
+
+						set_timeout(function()
+							ctx.event_instance:set_parameter_by_name("hdmod_level_feeling", 10.0)
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -243,8 +251,6 @@ module.banks = {
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
 						local player_depth = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.PLAYER_DEPTH)
 
-						ctx.event_instance:set_parameter_by_name("hdmod_level_feeling", 5.0)
-
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
 
@@ -257,6 +263,10 @@ module.banks = {
 						)
 						module.MUSIC_PARAMETER_STORAGE["player_depth"] = player_depth
 						ctx.event_instance:set_parameter_by_name("player_depth", player_depth)
+
+						set_timeout(function()
+							ctx.event_instance:set_parameter_by_name("hdmod_level_feeling", 5.0)
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -340,8 +350,6 @@ module.banks = {
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
 						local player_depth = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.PLAYER_DEPTH)
 
-						ctx.event_instance:set_parameter_by_name("current_theme", 2.0)
-
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
 
@@ -355,6 +363,10 @@ module.banks = {
 						)
 						module.MUSIC_PARAMETER_STORAGE["player_depth"] = player_depth
 						ctx.event_instance:set_parameter_by_name("player_depth", player_depth)
+
+						set_timeout(function()
+							ctx.event_instance:set_parameter_by_name("current_theme", 2.0)
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -447,10 +459,12 @@ module.banks = {
 
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
 
-						ctx.event_instance:set_parameter_by_name("current_theme", 15.0)
-
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
+
+						set_timeout(function()
+							ctx.event_instance:set_parameter_by_name("current_theme", 15.0)
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -479,10 +493,12 @@ module.banks = {
 
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
 
-						ctx.event_instance:set_parameter_by_name("hdmod_level_feeling", 11.0)
-
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
+
+						set_timeout(function()
+							ctx.event_instance:set_parameter_by_name("hdmod_level_feeling", 11.0)
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -512,10 +528,12 @@ module.banks = {
 
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
 
-						ctx.event_instance:set_parameter_by_name("current_theme", 8.0)
-
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
+
+						set_timeout(function()
+							ctx.event_instance:set_parameter_by_name("current_theme", 8.0)
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -545,13 +563,15 @@ module.banks = {
 
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
 
-						ctx.event_instance:set_parameter_by_name("current_theme", 7.0)
-
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
 
 						ctx.event_instance:set_parameter_by_name("level_track", module.level_track)
 						ctx.event_instance:set_parameter_by_name("current_shop_type", module.shop_type)
+
+						set_timeout(function()
+							ctx.event_instance:set_parameter_by_name("current_theme", 7.0)
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -611,10 +631,12 @@ module.banks = {
 
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
 
-						ctx.event_instance:set_parameter_by_name("current_theme", 11.0)
-
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
+
+						set_timeout(function()
+							ctx.event_instance:set_parameter_by_name("current_theme", 11.0)
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -644,13 +666,15 @@ module.banks = {
 
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
 
-						ctx.event_instance:set_parameter_by_name("current_theme", 6.0)
-
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
 
 						ctx.event_instance:set_parameter_by_name("level_track", module.level_track)
 						ctx.event_instance:set_parameter_by_name("current_shop_type", module.shop_type)
+
+						set_timeout(function()
+							ctx.event_instance:set_parameter_by_name("current_theme", 6.0)
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -714,10 +738,12 @@ module.banks = {
 
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
 
-						ctx.event_instance:set_parameter_by_name("current_theme", 3.0)
-
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
+
+						set_timeout(function()
+							ctx.event_instance:set_parameter_by_name("current_theme", 3.0)
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -746,7 +772,9 @@ module.banks = {
 					init_function = function(ctx)
 						module.MUSIC_PARAMETER_STORAGE = {}
 
-						ctx.event_instance:set_parameter_by_name("current_theme", 4.0)
+						set_timeout(function()
+							ctx.event_instance:set_parameter_by_name("current_theme", 4.0)
+						end, 1)
 					end,
 				},
 				should_play = function()
