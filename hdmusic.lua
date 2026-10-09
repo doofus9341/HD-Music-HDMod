@@ -90,6 +90,7 @@ module.banks = {
 				settings = {
 					base_volume = 1.0,
 					mute_shop_music = true,
+					autostart_eventinstance = false,
 					event_name = "hd_mines_custom_music",
 					event_description = get_event_by_id("{074918db-c60d-4921-8f15-287d9772460a}"),
 					parameter_update_time = 1000,
@@ -107,6 +108,10 @@ module.banks = {
 
 						ctx.event_instance:set_parameter_by_name("level_track", module.level_track)
 						ctx.event_instance:set_parameter_by_name("current_shop_type", module.shop_type)
+
+						set_timeout(function()
+							ctx.event_instance:start()
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -164,6 +169,7 @@ module.banks = {
 				settings = {
 					base_volume = 1.0,
 					mute_shop_music = true,
+					autostart_eventinstance = false,
 					event_name = "hd_black_market_custom_music",
 					event_description = get_event_by_id("{074918db-c60d-4921-8f15-287d9772460a}"),
 					parameter_update_time = 1000,
@@ -177,6 +183,10 @@ module.banks = {
 
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
+
+						set_timeout(function()
+							ctx.event_instance:start()
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -197,6 +207,7 @@ module.banks = {
 				settings = {
 					base_volume = 1.0,
 					mute_shop_music = true,
+					autostart_eventinstance = false,
 					event_name = "hd_castle_custom_music",
 					event_description = get_event_by_id("{074918db-c60d-4921-8f15-287d9772460a}"),
 					parameter_update_time = 1000,
@@ -210,6 +221,10 @@ module.banks = {
 
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
+
+						set_timeout(function()
+							ctx.event_instance:start()
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -230,6 +245,7 @@ module.banks = {
 				settings = {
 					base_volume = 1.0,
 					mute_shop_music = true,
+					autostart_eventinstance = false,
 					event_name = "hd_restless_dead_custom_music",
 					event_description = get_event_by_id("{074918db-c60d-4921-8f15-287d9772460a}"),
 					parameter_update_time = 1000,
@@ -257,6 +273,10 @@ module.banks = {
 						)
 						module.MUSIC_PARAMETER_STORAGE["player_depth"] = player_depth
 						ctx.event_instance:set_parameter_by_name("player_depth", player_depth)
+
+						set_timeout(function()
+							ctx.event_instance:start()
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -327,6 +347,7 @@ module.banks = {
 				settings = {
 					base_volume = 1.0,
 					mute_shop_music = true,
+					autostart_eventinstance = false,
 					event_name = "hd_jungle_custom_music",
 					event_description = get_event_by_id("{074918db-c60d-4921-8f15-287d9772460a}"),
 					parameter_update_time = 1000,
@@ -355,6 +376,10 @@ module.banks = {
 						)
 						module.MUSIC_PARAMETER_STORAGE["player_depth"] = player_depth
 						ctx.event_instance:set_parameter_by_name("player_depth", player_depth)
+
+						set_timeout(function()
+							ctx.event_instance:start()
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -438,6 +463,7 @@ module.banks = {
 				settings = {
 					base_volume = 1.0,
 					mute_shop_music = true,
+					autostart_eventinstance = false,
 					event_name = "hd_worm_custom_music",
 					event_description = get_event_by_id("{074918db-c60d-4921-8f15-287d9772460a}"),
 					parameter_update_time = 1000,
@@ -451,6 +477,10 @@ module.banks = {
 
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
+
+						set_timeout(function()
+							ctx.event_instance:start()
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -470,6 +500,7 @@ module.banks = {
 				settings = {
 					base_volume = 1.0,
 					mute_shop_music = true,
+					autostart_eventinstance = false,
 					event_name = "hd_yeti_custom_music",
 					event_description = get_event_by_id("{074918db-c60d-4921-8f15-287d9772460a}"),
 					parameter_update_time = 1000,
@@ -483,6 +514,10 @@ module.banks = {
 
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
+
+						set_timeout(function()
+							ctx.event_instance:start()
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -503,6 +538,7 @@ module.banks = {
 				settings = {
 					base_volume = 1.0,
 					mute_shop_music = true,
+					autostart_eventinstance = false,
 					event_name = "hd_mothership_custom_music",
 					event_description = get_event_by_id("{074918db-c60d-4921-8f15-287d9772460a}"),
 					parameter_update_time = 1000,
@@ -516,6 +552,10 @@ module.banks = {
 
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
+
+						set_timeout(function()
+							ctx.event_instance:start()
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -535,6 +575,7 @@ module.banks = {
 				settings = {
 					base_volume = 1.0,
 					mute_shop_music = true,
+					autostart_eventinstance = false,
 					event_name = "hd_ice_caves_custom_music",
 					event_description = get_event_by_id("{074918db-c60d-4921-8f15-287d9772460a}"),
 					parameter_update_time = 1000,
@@ -552,6 +593,10 @@ module.banks = {
 
 						ctx.event_instance:set_parameter_by_name("level_track", module.level_track)
 						ctx.event_instance:set_parameter_by_name("current_shop_type", module.shop_type)
+
+						set_timeout(function()
+							ctx.event_instance:start()
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -602,6 +647,7 @@ module.banks = {
 				settings = {
 					base_volume = 1.0,
 					mute_shop_music = true,
+					autostart_eventinstance = false,
 					event_name = "hd_city_of_gold_custom_music",
 					event_description = get_event_by_id("{074918db-c60d-4921-8f15-287d9772460a}"),
 					parameter_update_time = 1000,
@@ -609,12 +655,16 @@ module.banks = {
 						module.MUSIC_PARAMETER_STORAGE = {}
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = 0.0
 
-						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
-
 						ctx.event_instance:set_parameter_by_name("current_theme", 11.0)
+
+						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
 
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
+
+						set_timeout(function()
+							ctx.event_instance:start()
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -634,6 +684,7 @@ module.banks = {
 				settings = {
 					base_volume = 1.0,
 					mute_shop_music = true,
+					autostart_eventinstance = false,
 					event_name = "hd_temple_custom_music",
 					event_description = get_event_by_id("{074918db-c60d-4921-8f15-287d9772460a}"),
 					parameter_update_time = 1000,
@@ -651,6 +702,10 @@ module.banks = {
 
 						ctx.event_instance:set_parameter_by_name("level_track", module.level_track)
 						ctx.event_instance:set_parameter_by_name("current_shop_type", module.shop_type)
+
+						set_timeout(function()
+							ctx.event_instance:start()
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -705,6 +760,7 @@ module.banks = {
 				settings = {
 					base_volume = 1.0,
 					mute_shop_music = true,
+					autostart_eventinstance = false,
 					event_name = "hd_hell_custom_music",
 					event_description = get_event_by_id("{074918db-c60d-4921-8f15-287d9772460a}"),
 					parameter_update_time = 1000,
@@ -718,6 +774,10 @@ module.banks = {
 
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
+
+						set_timeout(function()
+							ctx.event_instance:start()
+						end, 1)
 					end,
 					update_function = function(ctx)
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
@@ -741,12 +801,17 @@ module.banks = {
 				settings = {
 					base_volume = 1.0,
 					mute_shop_music = true,
+					autostart_eventinstance = false,
 					event_name = "hd_olmec_custom_music",
 					event_description = get_event_by_id("{074918db-c60d-4921-8f15-287d9772460a}"),
 					init_function = function(ctx)
 						module.MUSIC_PARAMETER_STORAGE = {}
 
 						ctx.event_instance:set_parameter_by_name("current_theme", 4.0)
+
+						set_global_timeout(function()
+							ctx.event_instance:start()
+						end, 2)
 					end,
 				},
 				should_play = function()
@@ -758,12 +823,17 @@ module.banks = {
 				settings = {
 					base_volume = 1.0,
 					mute_shop_music = true,
+					autostart_eventinstance = false,
 					event_name = "hd_yama_custom_music",
 					event_description = get_event_by_id("{074918db-c60d-4921-8f15-287d9772460a}"),
 					init_function = function(ctx)
 						module.MUSIC_PARAMETER_STORAGE = {}
 
 						ctx.event_instance:set_parameter_by_name("hdmod_level_feeling", 23.0)
+
+						set_global_timeout(function()
+							ctx.event_instance:start()
+						end, 2)
 					end,
 				},
 				should_play = function()
