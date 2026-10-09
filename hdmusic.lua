@@ -655,9 +655,9 @@ module.banks = {
 						module.MUSIC_PARAMETER_STORAGE = {}
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = 0.0
 
-						ctx.event_instance:set_parameter_by_name("current_theme", 11.0)
-
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
+
+						ctx.event_instance:set_parameter_by_name("current_theme", 11.0)
 
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = ghost
 						ctx.event_instance:set_parameter_by_name("ghost", ghost)
