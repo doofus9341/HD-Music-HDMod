@@ -10,10 +10,10 @@ module.LOADING_STATE_TYPE = {
 	SAMPLEDATA = 2,
 }
 
--- Stores CustomBank objects. Each entry is any fmod_bank_path that maps to a CustomBank.
+-- Stores CustomBank objects. Each entry is an fmod_bank_path that maps to a CustomBank.
 local FMOD_BANKS = {}
 
--- Stores the callbacks that are executed when a bank is unloaded. Each entry is any fmod_bank_path that maps to a user-defined function. All unload callbacks are executed on script disable.
+-- Stores the callbacks that are executed when a bank is unloaded. Each entry is an fmod_bank_path that maps to a user-defined function. All unload callbacks are executed on script disable.
 local UNLOAD_CALLBACKS = {}
 
 ---@param fmod_bank_path string @ Path of the bank to load sample data for
