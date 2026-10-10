@@ -254,8 +254,10 @@ module.banks = {
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = 0.0
 						module.MUSIC_PARAMETER_STORAGE["current_shop_type"] = module.shop_type
 						module.MUSIC_PARAMETER_STORAGE["rushing_water"] = 0.0
+						module.MUSIC_PARAMETER_STORAGE["player_depth"] = 0.0
 
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
+						local player_depth = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.PLAYER_DEPTH)
 
 						ctx.event_instance:set_parameter_by_name("hdmod_level_feeling", 5.0)
 
@@ -269,6 +271,8 @@ module.banks = {
 							"rushing_water",
 							module.MUSIC_FEELING_STORAGE["rushing_water"]
 						)
+						module.MUSIC_PARAMETER_STORAGE["player_depth"] = player_depth
+						ctx.event_instance:set_parameter_by_name("player_depth", player_depth)
 
 						set_timeout(function()
 							ctx.event_instance:start()
@@ -297,6 +301,15 @@ module.banks = {
 								"rushing_water",
 								module.MUSIC_FEELING_STORAGE["rushing_water"]
 							)
+						end
+
+						if module.MUSIC_FEELING_STORAGE["rushing_water"] == 1.0 then
+							local player_depth = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.PLAYER_DEPTH)
+
+							if module.MUSIC_PARAMETER_STORAGE["player_depth"] ~= player_depth then
+								module.MUSIC_PARAMETER_STORAGE["player_depth"] = player_depth
+								ctx.event_instance:set_parameter_by_name("player_depth", player_depth)
+							end
 						end
 					end,
 				},
@@ -343,8 +356,10 @@ module.banks = {
 						module.MUSIC_PARAMETER_STORAGE["ghost"] = 0.0
 						module.MUSIC_PARAMETER_STORAGE["current_shop_type"] = module.shop_type
 						module.MUSIC_PARAMETER_STORAGE["rushing_water"] = 0.0
+						module.MUSIC_PARAMETER_STORAGE["player_depth"] = 0.0
 
 						local ghost = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.GHOST)
+						local player_depth = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.PLAYER_DEPTH)
 
 						ctx.event_instance:set_parameter_by_name("current_theme", 2.0)
 
@@ -359,6 +374,8 @@ module.banks = {
 							"rushing_water",
 							module.MUSIC_FEELING_STORAGE["rushing_water"]
 						)
+						module.MUSIC_PARAMETER_STORAGE["player_depth"] = player_depth
+						ctx.event_instance:set_parameter_by_name("player_depth", player_depth)
 
 						set_timeout(function()
 							ctx.event_instance:start()
@@ -387,6 +404,15 @@ module.banks = {
 								"rushing_water",
 								module.MUSIC_FEELING_STORAGE["rushing_water"]
 							)
+						end
+
+						if module.MUSIC_FEELING_STORAGE["rushing_water"] == 1.0 then
+							local player_depth = ctx.bgm_master:get_parameter(VANILLA_SOUND_PARAM.PLAYER_DEPTH)
+
+							if module.MUSIC_PARAMETER_STORAGE["player_depth"] ~= player_depth then
+								module.MUSIC_PARAMETER_STORAGE["player_depth"] = player_depth
+								ctx.event_instance:set_parameter_by_name("player_depth", player_depth)
+							end
 						end
 					end,
 				},
