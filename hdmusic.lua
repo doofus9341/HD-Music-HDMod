@@ -74,7 +74,7 @@ module.banks = {
 				},
 				should_play = function()
 					local should_play = state.screen == SCREEN.LEVEL
-						and hdmod.worldlib.HD_WORLDSTATE_STATE == hdmod.worldlib.HD_WORLDSTATE_STATUS.TUTORIAL
+						and hdmod.worldlib.get_hd_worldstate_state() == hdmod.worldlib.HD_WORLDSTATE_STATUS.TUTORIAL
 
 					if should_play then
 						module.shop_type = prng:random_int(0, 3, PRNG_CLASS.FX)
