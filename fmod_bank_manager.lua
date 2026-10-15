@@ -1,3 +1,10 @@
+meta = {
+	name = "FMOD Bank Manager",
+	version = "1.0",
+	author = "doofus9341",
+	description = "A library for loading and managing FMOD Studio Banks.",
+}
+
 local module = {}
 
 module.debug_print = false
