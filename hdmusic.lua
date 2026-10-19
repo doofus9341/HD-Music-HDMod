@@ -41,7 +41,7 @@ module.banks = {
 					end
 				end,
 			}
-			
+
 			module.basecamp_music = {
 				base_volume = 1.0,
 				event_name = "hd_basecamp_custom_music",
@@ -140,6 +140,7 @@ module.banks = {
 							module.level_track = 0.0
 						elseif prng:random_index(100, PRNG_CLASS.FX) == 1 then
 							module.level_track = 4.0
+							hdmod.custommusiclib.clear_level_music()
 						elseif module.level_track < 1 or module.level_track > 3 then
 							local new_level_track = prng:random_index(3, PRNG_CLASS.FX)
 
@@ -159,6 +160,13 @@ module.banks = {
 						else
 							module.shop_type = prng:random_int(0, 3, PRNG_CLASS.FX)
 						end
+					end
+
+					if options.level_music_transition and module.level_track > 0 and module.level_track < 4 then
+						should_play = should_play
+							or state.screen == SCREEN.TRANSITION
+								and state.theme == THEME.DWELLING
+								and state.theme_next == THEME.DWELLING
 					end
 
 					return should_play
@@ -426,6 +434,7 @@ module.banks = {
 
 						if prng:random_index(100, PRNG_CLASS.FX) == 1 then
 							module.level_track = 4.0
+							hdmod.custommusiclib.clear_level_music()
 						elseif module.level_track < 1 or module.level_track > 3 then
 							local new_level_track = prng:random_index(3, PRNG_CLASS.FX)
 
@@ -453,6 +462,13 @@ module.banks = {
 						else
 							module.MUSIC_FEELING_STORAGE["rushing_water"] = 0.0
 						end
+					end
+
+					if options.level_music_transition and module.level_track > 0 and module.level_track < 4 then
+						should_play = should_play
+							or state.screen == SCREEN.TRANSITION
+								and state.theme == THEME.JUNGLE
+								and state.theme_next == THEME.JUNGLE
 					end
 
 					return should_play
@@ -618,6 +634,7 @@ module.banks = {
 					if should_play then
 						if prng:random_index(100, PRNG_CLASS.FX) == 1 then
 							module.level_track = 4.0
+							hdmod.custommusiclib.clear_level_music()
 						elseif module.level_track < 1 or module.level_track > 3 then
 							local new_level_track = prng:random_index(3, PRNG_CLASS.FX)
 
@@ -637,6 +654,13 @@ module.banks = {
 						else
 							module.shop_type = prng:random_int(0, 3, PRNG_CLASS.FX)
 						end
+					end
+
+					if options.level_music_transition and module.level_track > 0 and module.level_track < 4 then
+						should_play = should_play
+							or state.screen == SCREEN.TRANSITION
+								and state.theme == THEME.ICE_CAVES
+								and state.theme_next == THEME.ICE_CAVES
 					end
 
 					return should_play
@@ -731,6 +755,7 @@ module.banks = {
 
 						if prng:random_index(100, PRNG_CLASS.FX) == 1 then
 							module.level_track = 4.0
+							hdmod.custommusiclib.clear_level_music()
 						elseif module.level_track < 1 or module.level_track > 3 then
 							local new_level_track = prng:random_index(3, PRNG_CLASS.FX)
 
@@ -750,6 +775,13 @@ module.banks = {
 						else
 							module.shop_type = prng:random_int(0, 3, PRNG_CLASS.FX)
 						end
+					end
+
+					if options.level_music_transition and module.level_track > 0 and module.level_track < 4 then
+						should_play = should_play
+							or state.screen == SCREEN.TRANSITION
+								and state.theme == THEME.TEMPLE
+								and state.theme_next == THEME.TEMPLE
 					end
 
 					return should_play
@@ -789,11 +821,24 @@ module.banks = {
 					end,
 				},
 				should_play = function()
-					return (
-						state.screen == SCREEN.LEVEL
-						and state.theme == THEME.VOLCANA
-						and not hdmod.feelingslib.feeling_check(hdmod.feelingslib.FEELING_ID.YAMA)
-					)
+					if options.level_music_transition then
+						return (
+							state.screen == SCREEN.LEVEL
+							and state.theme == THEME.VOLCANA
+							and not hdmod.feelingslib.feeling_check(hdmod.feelingslib.FEELING_ID.YAMA)
+						)
+							or (
+								state.screen == SCREEN.TRANSITION
+								and state.theme == THEME.VOLCANA
+								and state.theme_next == THEME.VOLCANA
+							)
+					else
+						return (
+							state.screen == SCREEN.LEVEL
+							and state.theme == THEME.VOLCANA
+							and not hdmod.feelingslib.feeling_check(hdmod.feelingslib.FEELING_ID.YAMA)
+						)
+					end
 				end,
 			})
 

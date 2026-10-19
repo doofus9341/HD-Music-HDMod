@@ -56,11 +56,36 @@ local music_pack_meta = {
 local function init_music_pack()
 	if hdmod then
 		if not bankmanagerlib.bank_exists(hdmusic.banks.hdmusic.bank_path) then
-			bankmanagerlib.load_bank_metadata(hdmusic.banks.hdmusic.bank_path, hdmusic.banks.hdmusic.load_bank_flags, function()
-				hdmod.register_hdmod_music_pack(mod_script_id, music_pack_meta, hdmusic)
-			end, hdmusic.banks.hdmusic.unload_func)
+			bankmanagerlib.load_bank_metadata(
+				hdmusic.banks.hdmusic.bank_path,
+				hdmusic.banks.hdmusic.load_bank_flags,
+				function()
+					hdmod.register_hdmod_music_pack(mod_script_id, music_pack_meta, hdmusic)
+				end,
+				hdmusic.banks.hdmusic.unload_func
+			)
 		end
 	end
+end
+
+local default_options_data = {
+	level_music_transition = false,
+}
+local default_options = table.unpack({ default_options_data })
+local function register_options()
+	register_option_bool(
+		"level_music_transition",
+		"Level Music - Play during level transitions",
+		"Level music will keep playing during level transitions instead of stopping",
+		default_options.level_music_transition
+	)
+	register_option_button("_reset", "Reset options to defaults", "", function()
+		default_options = table.unpack({ default_options_data })
+		register_options()
+		for k, v in pairs(default_options_data) do
+			options[k] = v
+		end
+	end)
 end
 
 set_callback(function()
@@ -72,5 +97,26 @@ set_callback(function()
 		hdmod.unregister_hdmod_music_pack(mod_script_id)
 	end
 end, ON.SCRIPT_DISABLE)
+
+set_callback(function(save_ctx)
+	local save_data_json = json.encode(options)
+	save_ctx:save(save_data_json)
+end, ON.SAVE)
+
+set_callback(function(load_ctx)
+	local options_data_json = load_ctx:load()
+	if options_data_json ~= "" then
+		default_options = json.decode(options_data_json)
+	end
+	for idx, value in pairs(default_options_data) do
+		if default_options[idx] == nil then
+			default_options[idx] = value
+		end
+	end
+	register_options()
+	for key, value in pairs(default_options) do
+		options[key] = value
+	end
+end, ON.LOAD)
 
 init_music_pack()
