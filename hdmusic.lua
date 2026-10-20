@@ -163,10 +163,16 @@ module.banks = {
 					end
 
 					if options.level_music_transition and module.level_track > 0 and module.level_track < 4 then
-						should_play = should_play
-							or state.screen == SCREEN.TRANSITION
-								and state.theme == THEME.DWELLING
-								and state.theme_next == THEME.DWELLING
+						local current_custom_level_music = hdmod.custommusiclib.get_current_custom_level_music()
+						if
+							current_custom_level_music
+							and current_custom_level_music.settings.event_name == "hd_mines_custom_music"
+						then
+							should_play = should_play
+								or state.screen == SCREEN.TRANSITION
+									and state.theme == THEME.DWELLING
+									and state.theme_next == THEME.DWELLING
+						end
 					end
 
 					return should_play
@@ -465,10 +471,24 @@ module.banks = {
 					end
 
 					if options.level_music_transition and module.level_track > 0 and module.level_track < 4 then
-						should_play = should_play
-							or state.screen == SCREEN.TRANSITION
-								and state.theme == THEME.JUNGLE
-								and state.theme_next == THEME.JUNGLE
+						local current_custom_level_music = hdmod.custommusiclib.get_current_custom_level_music()
+						if
+							current_custom_level_music
+							and current_custom_level_music.settings.event_name == "hd_jungle_custom_music"
+						then
+							should_play = should_play
+								or state.screen == SCREEN.TRANSITION
+									and state.theme == THEME.JUNGLE
+									and state.theme_next == THEME.JUNGLE
+						end
+
+						if should_play and state.screen == SCREEN.TRANSITION then
+							if hdmod.feelingslib.feeling_check(hdmod.feelingslib.FEELING_ID.RUSHING_WATER) then
+								module.MUSIC_FEELING_STORAGE["rushing_water"] = 1.0
+							else
+								module.MUSIC_FEELING_STORAGE["rushing_water"] = 0.0
+							end
+						end
 					end
 
 					return should_play
@@ -657,10 +677,16 @@ module.banks = {
 					end
 
 					if options.level_music_transition and module.level_track > 0 and module.level_track < 4 then
-						should_play = should_play
-							or state.screen == SCREEN.TRANSITION
-								and state.theme == THEME.ICE_CAVES
-								and state.theme_next == THEME.ICE_CAVES
+						local current_custom_level_music = hdmod.custommusiclib.get_current_custom_level_music()
+						if
+							current_custom_level_music
+							and current_custom_level_music.settings.event_name == "hd_ice_caves_custom_music"
+						then
+							should_play = should_play
+								or state.screen == SCREEN.TRANSITION
+									and state.theme == THEME.ICE_CAVES
+									and state.theme_next == THEME.ICE_CAVES
+						end
 					end
 
 					return should_play
@@ -778,10 +804,16 @@ module.banks = {
 					end
 
 					if options.level_music_transition and module.level_track > 0 and module.level_track < 4 then
-						should_play = should_play
-							or state.screen == SCREEN.TRANSITION
-								and state.theme == THEME.TEMPLE
-								and state.theme_next == THEME.TEMPLE
+						local current_custom_level_music = hdmod.custommusiclib.get_current_custom_level_music()
+						if
+							current_custom_level_music
+							and current_custom_level_music.settings.event_name == "hd_temple_custom_music"
+						then
+							should_play = should_play
+								or state.screen == SCREEN.TRANSITION
+									and state.theme == THEME.TEMPLE
+									and state.theme_next == THEME.TEMPLE
+						end
 					end
 
 					return should_play
