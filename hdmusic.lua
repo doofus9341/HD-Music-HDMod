@@ -990,6 +990,10 @@ function module.boss_music()
 	end
 end
 
+function module.boss_phase_two_music()
+	return
+end
+
 function module.post_boss_music()
 	return
 end
